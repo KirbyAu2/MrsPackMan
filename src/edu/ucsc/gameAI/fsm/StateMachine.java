@@ -36,7 +36,6 @@ public class StateMachine implements IStateMachine {
         Collection<IAction> actions = new ArrayList<IAction>();
         Collection<ITransition> transitions = _currentState.getTransitions();
         for(ITransition trans : transitions){
-            //ITransition tempTrans = transitions.get(i);
             if(trans.isTriggered()){
                 //Add the current state's exit action
                 actions.add(_currentState.getExitAction());
