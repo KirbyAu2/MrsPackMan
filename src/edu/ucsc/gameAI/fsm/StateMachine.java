@@ -14,6 +14,16 @@ import edu.ucsc.gameAI.IAction;
  */
 public class StateMachine implements IStateMachine {
     private IState _currentState;
+    private IState _initialState;
+    
+    /**
+     * 
+     * @param initialState
+     */
+    StateMachine(IState initialState){
+        _initialState = initialState;
+        _currentState = _initialState;
+    }
     
     /**
      * The member function that performs the update on the FSM:
@@ -28,16 +38,16 @@ public class StateMachine implements IStateMachine {
         for(ITransition trans : transitions){
             //ITransition tempTrans = transitions.get(i);
             if(trans.isTriggered()){
-                //Add the transition action
-                actions.add(trans.getAction());
                 //Add the current state's exit action
                 actions.add(_currentState.getExitAction());
+                //Add the transition action
+                actions.add(trans.getAction());
                 //Set the current state to the new state
                 _currentState = trans.getTargetState();
                 //Add the entry action from the current state
                 actions.add(_currentState.getEntryAction());
                 break;
-    		}
+            }
     	}
     	//In any case, we need to execute the action of the currentState, whether it was replaced
     	//or not.
