@@ -34,6 +34,9 @@ public class State implements IState {
 	 * @return Action for being in this state.
 	 */
 	public IAction getAction(){
+		//TO BE IMPLEMENTED
+		//NOTE: Not sure if this is something that we set through the
+		//constructor or if this is a set of conditionals?
 		return _currentAction;
 	}
 	
