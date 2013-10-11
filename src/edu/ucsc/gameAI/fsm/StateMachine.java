@@ -15,14 +15,14 @@ import edu.ucsc.gameAI.IAction;
 public class StateMachine implements IStateMachine {
     private IState _currentState;
     
-	/**
-	 * The member function that performs the update on the FSM:
-	 * - Test transitions for current state and moves to new state.
-	 * - Returns a collection of IActions that result from the current
-	 *   state and any transitions, entrances and exits that may occur.
-	 * @return A collection of actions produced by evaluating the FSM.
-	 */
-	public Collection<IAction> update(){
+    /**
+     * The member function that performs the update on the FSM:
+     * - Test transitions for current state and moves to new state.
+     * - Returns a collection of IActions that result from the current
+     *   state and any transitions, entrances and exits that may occur.
+     * @return A collection of actions produced by evaluating the FSM.
+     */
+    public Collection<IAction> update(){
         Collection<IAction> actions = new ArrayList<IAction>();
         Collection<ITransition> transitions = _currentState.getTransitions();
         for(ITransition trans : transitions){
@@ -37,13 +37,13 @@ public class StateMachine implements IStateMachine {
                 //Add the entry action from the current state
                 actions.add(_currentState.getEntryAction());
                 break;
-			}
-		}
-		//In any case, we need to execute the action of the currentState, whether it was replaced
-		//or not.
-		actions.add(_currentState.getAction());
-		return actions;
-	}
+    		}
+    	}
+    	//In any case, we need to execute the action of the currentState, whether it was replaced
+    	//or not.
+    	actions.add(_currentState.getAction());
+    	return actions;
+    }
 	
     /**
      * Retrieves the current state of the finite state machine.
