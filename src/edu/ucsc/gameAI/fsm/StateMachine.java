@@ -13,8 +13,8 @@ import edu.ucsc.gameAI.IAction;
  *
  */
 public class StateMachine implements IStateMachine {
-	private IState _currentState;
-	
+    private IState _currentState;
+    
 	/**
 	 * The member function that performs the update on the FSM:
 	 * - Test transitions for current state and moves to new state.
@@ -23,20 +23,20 @@ public class StateMachine implements IStateMachine {
 	 * @return A collection of actions produced by evaluating the FSM.
 	 */
 	public Collection<IAction> update(){
-		Collection<IAction> actions = new ArrayList<IAction>();
-		Collection<ITransition> transitions = _currentState.getTransitions();
-		for(ITransition trans : transitions){
-			//ITransition tempTrans = transitions.get(i);
-			if(trans.isTriggered()){
-				//Add the transition action
-				actions.add(trans.getAction());
-				//Add the current state's exit action
-				actions.add(_currentState.getExitAction());
-				//Set the current state to the new state
-				_currentState = trans.getTargetState();
-				//Add the entry action from the current state
-				actions.add(_currentState.getEntryAction());
-				break;
+        Collection<IAction> actions = new ArrayList<IAction>();
+        Collection<ITransition> transitions = _currentState.getTransitions();
+        for(ITransition trans : transitions){
+            //ITransition tempTrans = transitions.get(i);
+            if(trans.isTriggered()){
+                //Add the transition action
+                actions.add(trans.getAction());
+                //Add the current state's exit action
+                actions.add(_currentState.getExitAction());
+                //Set the current state to the new state
+                _currentState = trans.getTargetState();
+                //Add the entry action from the current state
+                actions.add(_currentState.getEntryAction());
+                break;
 			}
 		}
 		//In any case, we need to execute the action of the currentState, whether it was replaced
@@ -45,11 +45,11 @@ public class StateMachine implements IStateMachine {
 		return actions;
 	}
 	
-	/**
-	 * Retrieves the current state of the finite state machine.
-	 * @return The current state of the finite state machine.
-	 */
-	public IState getCurrentState(){
-		return _currentState;
-	}
+    /**
+     * Retrieves the current state of the finite state machine.
+     * @return The current state of the finite state machine.
+     */
+    public IState getCurrentState(){
+        return _currentState;
+    }
 }
