@@ -47,13 +47,13 @@ public class StateMachine implements IStateMachine {
                 actions.add(_currentState.getEntryAction());
                 break;
             }
-    	}
-    	//In any case, we need to execute the action of the currentState, whether it was replaced
-    	//or not.
-    	actions.add(_currentState.getAction());
-    	return actions;
+        }
+        //In any case, we need to execute the action of the currentState, whether it was replaced
+        //or not.
+        actions.add(_currentState.getAction());
+        return actions;
     }
-	
+    
     /**
      * Retrieves the current state of the finite state machine.
      * @return The current state of the finite state machine.

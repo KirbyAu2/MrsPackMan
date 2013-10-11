@@ -24,9 +24,9 @@ public class State implements IState {
      * @param transitions sets the transitions to call from this state to another
      */
     State(IAction entryAction, IAction exitAction, Collection<ITransition> transitions){
-    	_entryAction = entryAction;
-    	_exitAction = exitAction;
-    	_transitions = transitions;
+        _entryAction = entryAction;
+        _exitAction = exitAction;
+        _transitions = transitions;
     }
     
     /**
@@ -37,7 +37,7 @@ public class State implements IState {
     	//TO BE IMPLEMENTED
     	//NOTE: Not sure if this is something that we set through the
     	//constructor or if this is a set of conditionals?
-    	return _currentAction;
+        return _currentAction;
     }
     
     /**
@@ -45,7 +45,7 @@ public class State implements IState {
      * @return The action associated with entering this state.
      */
     public IAction getEntryAction(){
-    	return _entryAction;
+        return _entryAction;
     }
     
     /**
@@ -53,7 +53,7 @@ public class State implements IState {
      * @return The action associated with exiting this state.
      */
     public IAction getExitAction(){
-    	return _exitAction;
+        return _exitAction;
     }
     
     /**
@@ -61,7 +61,7 @@ public class State implements IState {
      * @return The outbound transitions from this state.
      */
     public Collection<ITransition> getTransitions(){
-    	return _transitions;
+        return _transitions;
     }
 }
 
