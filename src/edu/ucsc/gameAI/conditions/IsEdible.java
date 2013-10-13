@@ -1,4 +1,4 @@
-package src.edu.ucsc.gameAI.conditions;
+package edu.ucsc.gameAI.conditions;
 
 import edu.ucsc.gameAI.ICondition;
 import pacman.game.Constants.GHOST;
