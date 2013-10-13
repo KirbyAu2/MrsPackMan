@@ -9,14 +9,14 @@ public class GhostEaten implements ICondition {
     private Game _game;
     private GHOST _ghost;
     
-        public GhostEaten(Game game, GHOST ghost)
-        {
+    public GhostEaten(Game game, GHOST ghost)
+    {
         _game = game;
         _ghost = ghost;
-        }
+    }
         
-        public boolean test() 
-        {
-                return _game.wasGhostEaten(_ghost);
-        }
+    public boolean test() 
+    {
+        return _game.wasGhostEaten(_ghost);
+    }
 }
