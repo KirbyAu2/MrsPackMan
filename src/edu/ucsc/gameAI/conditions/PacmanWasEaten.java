@@ -1,18 +1,19 @@
-package edu.ucsc.gameAI.conditions;
+package src.edu.ucsc.gameAI.conditions;
 
 import edu.ucsc.gameAI.ICondition;
-
+import pacman.game.Game;
 
 public class PacmanWasEaten implements ICondition {
-	
-
-	public PacmanWasEaten()
-	{
-
-	}
-	
-	public boolean test() 
-	{
-		return false;
-	}
+    
+    private Game _game;
+    
+    public PacmanWasEaten(Game game)
+    {
+        _game = game;
+    }
+    
+    public boolean test() 
+    {
+        return _game.wasPacManEaten();
+    }
 }

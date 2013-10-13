@@ -1,17 +1,19 @@
-package edu.ucsc.gameAI.conditions;
+package src.edu.ucsc.gameAI.conditions;
 
 import edu.ucsc.gameAI.ICondition;
+import pacman.game.Game;
 
 public class PowerPillWasEaten implements ICondition {
-	
-
-	public PowerPillWasEaten()
-	{
-
-	}
-	
-	public boolean test() 
-	{
-		return false;
-	}
+    
+    private Game _game;
+    
+    public PowerPillWasEaten(Game game)
+    {
+        _game = game;
+    }
+    
+    public boolean test() 
+    {
+        return _game.wasPowerPillEaten();
+    }
 }

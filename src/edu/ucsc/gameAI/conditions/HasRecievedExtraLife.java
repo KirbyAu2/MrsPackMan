@@ -1,19 +1,21 @@
-package edu.ucsc.gameAI.conditions;
+package src.edu.ucsc.gameAI.conditions;
 
 import edu.ucsc.gameAI.ICondition;
+import pacman.game.Game;
 
 
 
 public class HasRecievedExtraLife implements ICondition {
-	
-
-	public HasRecievedExtraLife()
-	{
-
-	}
-	
-	public boolean test() 
-	{
-		return false;
-	}
+    
+    private Game _game;
+    
+    public HasRecievedExtraLife(Game game)
+    {
+        _game = game;
+    }
+    
+    public boolean test() 
+    {
+        return _game.getPacman().hasReceivedExtraLife;
+    }
 }

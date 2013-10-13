@@ -1,17 +1,21 @@
-package edu.ucsc.gameAI.conditions;
+package src.edu.ucsc.gameAI.conditions;
 
 import edu.ucsc.gameAI.ICondition;
+import pacman.game.Game;
 
 public class IsPillStillAvailible implements ICondition {
-	
-	
-	public IsPillStillAvailible(int pillIndex)
-	{
-
-	}
-	
-	public boolean test() 
-	{
-		return false;
-	}
+    
+    private Game _game;
+    private int _pillIndex;
+    
+    public IsPillStillAvailible(Game game, int pillIndex)
+    {
+        _game = game;
+        _pillIndex = pillIndex;
+    }
+    
+    public boolean test() 
+    {
+        return _game.isPillStillAvailable(_pillIndex);
+    }
 }
