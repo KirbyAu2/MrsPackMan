@@ -4,19 +4,21 @@ import edu.ucsc.gameAI.ICondition;
 import pacman.game.Game;
 
 public class NumberOfLivesRemaining implements ICondition {
-	
+    
     private Game _game;
     private int _min,_max;
     
-	public NumberOfLivesRemaining(Game game, int min, int max)
-	{
+    public NumberOfLivesRemaining(Game game, int min, int max)
+    {
         _game = game;
         _min = min;
         _max = max;
-	}
-	
-	public boolean test() 
-	{
-		return false;
-	}
+    }
+    
+    public boolean test() 
+    {
+        int livesRemaining = _game.getPacmanNumberOfLivesRemaining();
+        
+        return (livesRemaining >= _min) && (livesRemaining <= _max);
+    }
 }

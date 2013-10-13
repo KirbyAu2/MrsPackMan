@@ -6,16 +6,16 @@ import pacman.game.Game;
 
 
 public class HasRecievedExtraLife implements ICondition {
-	
+    
     private Game _game;
     
-	public HasRecievedExtraLife(Game game)
-	{
+    public HasRecievedExtraLife(Game game)
+    {
         _game = game;
-	}
-	
-	public boolean test() 
-	{
-		return _game.getPacman().hasReceivedExtraLife;
-	}
+    }
+    
+    public boolean test() 
+    {
+        return _game.getPacman().hasReceivedExtraLife;
+    }
 }
