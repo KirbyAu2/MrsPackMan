@@ -9,7 +9,7 @@ import edu.ucsc.gameAI.ICondition;
  * 
  * @author Josh McCoy
  */
-public class BinaryDecision implements IBinaryDecision {
+public class BinaryDecision implements IBinaryDecision, IBinaryNode {
 
 	private IBinaryNode trueBranch;
 	private IBinaryNode falseBranch;
