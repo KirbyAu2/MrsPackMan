@@ -1,18 +1,21 @@
-package edu.ucsc.gameAI.conditions;
+package src.edu.ucsc.gameAI.conditions;
 
 import edu.ucsc.gameAI.ICondition;
-
+import pacman.game.Game;
 
 public class MazeIndex implements ICondition {
 	
-
-	public MazeIndex(int index)
+    private Game _game;
+    private int _index;
+    
+	public MazeIndex(Game game, int index)
 	{
-
+        _game = game;
+        _index = index;
 	}
 	
 	public boolean test() 
 	{
-		return false;
+		return (_game.getMazeIndex() == _index);
 	}
 }

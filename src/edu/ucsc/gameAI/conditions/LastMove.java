@@ -1,15 +1,16 @@
-package edu.ucsc.gameAI.conditions;
+package src.edu.ucsc.gameAI.conditions;
 
 import edu.ucsc.gameAI.ICondition;
 import pacman.game.Constants.MOVE;
-
+import pacman.game.Game;
 
 public class LastMove implements ICondition {
 	
-
-	public LastMove(MOVE last)
+    private Game _game;
+    
+	public LastMove(Game game, MOVE last)
 	{
-
+        _game = game;
 	}
 	
 	public boolean test() 

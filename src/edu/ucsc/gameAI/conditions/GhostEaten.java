@@ -1,19 +1,22 @@
-package edu.ucsc.gameAI.conditions;
+package src.edu.ucsc.gameAI.conditions;
 
 import edu.ucsc.gameAI.ICondition;
 import pacman.game.Constants.GHOST;
-
+import pacman.game.Game;
 
 public class GhostEaten implements ICondition {
 	
-
-	public GhostEaten(GHOST ghost)
+    private Game _game;
+    private GHOST _ghost;
+    
+	public GhostEaten(Game game, GHOST ghost)
 	{
-
+        _game = game;
+        _ghost = ghost;
 	}
 	
 	public boolean test() 
 	{
-		return false;
+		return _game.wasGhostEaten(_ghost);
 	}
 }
