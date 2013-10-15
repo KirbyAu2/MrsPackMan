@@ -1,21 +1,23 @@
 package edu.ucsc.gameAI.conditions;
 
 import edu.ucsc.gameAI.ICondition;
+import pacman.game.Constants.GHOST;
 import pacman.game.Game;
 
-public class MazeIndex implements ICondition {
+public class CurrentPacmanNodeIndex implements ICondition {
     
     private Game _game;
     private int _index;
-    
-    public MazeIndex(Game game, int index)
+
+    public CurrentPacmanNodeIndex(Game game, int index)
     {
         _game = game;
         _index = index;
     }
     
+    
     public boolean test() 
     {
-        return (_game.getMazeIndex() == _index);
+        return ( _index == _game.getPacmanCurrentNodeIndex() );
     }
 }
