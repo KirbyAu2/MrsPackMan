@@ -7,7 +7,7 @@ public class PowerPillInRegion implements ICondition {
     
     private int _maxX, _minX, _maxY, _minY;
     
-    public PowerPillInRegion(Game game, int x1, int y1, int x2, int y2)
+    public PowerPillInRegion(int x1, int y1, int x2, int y2)
     {
         _maxX = (x1 > x2) ? x1 : x2;
         _minX = (x1 > x2) ? x2 : x1;

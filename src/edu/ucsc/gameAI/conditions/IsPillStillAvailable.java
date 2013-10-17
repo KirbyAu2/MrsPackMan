@@ -3,11 +3,11 @@ package edu.ucsc.gameAI.conditions;
 import edu.ucsc.gameAI.ICondition;
 import pacman.game.Game;
 
-public class IsPillStillAvailible implements ICondition {
+public class IsPillStillAvailable implements ICondition {
     
     private int _pillIndex;
     
-    public IsPillStillAvailible( int pillIndex)
+    public IsPillStillAvailable(int pillIndex)
     {
         _pillIndex = pillIndex;
     }

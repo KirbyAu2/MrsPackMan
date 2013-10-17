@@ -20,7 +20,7 @@ public class Transition implements ITransition {
      * @param action sets the action to be taken when this transition executes
      * @param condition sets the condition of when this transition is triggered
      */
-    Transition(){
+    public Transition(){
     }
     
     /**

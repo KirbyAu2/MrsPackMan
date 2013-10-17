@@ -23,7 +23,7 @@ public class State implements IState {
      * @param exitAction sets the exit action that will be called when leaving this state
      * @param transitions sets the transitions to call from this state to another
      */
-    State(){
+    public State(){
         
     }
     
