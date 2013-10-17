@@ -23,13 +23,15 @@ import pacman.controllers.examples.RandomNonRevPacMan;
 import pacman.controllers.examples.RandomPacMan;
 import pacman.controllers.examples.StarterGhosts;
 import pacman.controllers.examples.StarterPacMan;
-import pacman.entries.ghosts.*;
+import pacman.entries.ghosts.MyGhosts;
+import pacman.entries.pacman.MyPacMan;
 import pacman.game.Game;
 import pacman.game.GameView;
 import static pacman.game.Constants.*;
 import edu.ucsc.gameAI.*;
 import edu.ucsc.gameAI.conditions.*;
 import pacman.Evaluator;
+
 
 /**
  * This class may be used to execute the game in timed or un-timed modes, with or without
@@ -48,7 +50,6 @@ public class Executor
     public static void main(String[] args)
     {
         Executor exec=new Executor();
-
         
         //run multiple games in batch mode - good for testing.
         int numTrials=10000;

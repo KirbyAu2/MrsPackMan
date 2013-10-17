@@ -21,7 +21,6 @@ public class GoDownAction implements IAction, IBinaryNode {
 
     @Override
     public MOVE getMove() {
-        // TODO Auto-generated method stub
         return MOVE.DOWN;
     }
 }
