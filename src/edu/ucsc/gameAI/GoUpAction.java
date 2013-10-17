@@ -16,7 +16,7 @@ public class GoUpAction implements IAction, IBinaryNode {
     @Override
     public IAction makeDecision(Game game) {
         // TODO Auto-generated method stub
-        return null;
+        return this;
     }
 
     @Override

@@ -2,6 +2,7 @@ package edu.ucsc.gameAI.fsm;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 
 import pacman.game.Game;
 import edu.ucsc.gameAI.IAction;
@@ -35,7 +36,8 @@ public class StateMachine implements IStateMachine {
      * @return A collection of actions produced by evaluating the FSM.
      */
     public Collection<IAction> update(Game game){
-        Collection<IAction> actions = new ArrayList<IAction>();
+        
+        Collection<IAction> actions = new LinkedList<IAction>();
         Collection<ITransition> transitions = _currentState.getTransitions();
         for(ITransition trans : transitions){
             if(trans.isTriggered(game)){
