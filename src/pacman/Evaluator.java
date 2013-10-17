@@ -113,7 +113,9 @@ public class Evaluator
         // Ms Pac ManState Conditions
         if (!(new CurrentPacmanNodeIndex(game.getPacmanCurrentNodeIndex())).test(game))
             System.out.println("CurrentPacmanNodeIndex failed");
-        if (!(new NumberOfLivesRemaining(game.getPacmanNumberOfLivesRemaining()).test(game)))
+        if (!(new NumberOfLivesRemaining(
+                game.getPacmanNumberOfLivesRemaining(),
+                game.getPacmanNumberOfLivesRemaining() ).test(game)));
             System.out.println("NumberOfLivesRemaining failed");
         if (!(new PacmanLastMove(game.getPacmanLastMoveMade()).test(game)))
             System.out.println("PacmanLastMove failed");
