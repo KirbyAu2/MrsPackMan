@@ -6,17 +6,16 @@ import pacman.game.Game;
 
 public class GhostEaten implements ICondition {
         
-    private Game _game;
+
     private GHOST _ghost;
     
-    public GhostEaten(Game game, GHOST ghost)
+    public GhostEaten(GHOST ghost)
     {
-        _game = game;
         _ghost = ghost;
     }
         
-    public boolean test() 
+    public boolean test(Game game) 
     {
-        return _game.wasGhostEaten(_ghost);
+        return game.wasGhostEaten(_ghost);
     }
 }

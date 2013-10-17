@@ -5,19 +5,17 @@ import pacman.game.Game;
 
 public class Score implements ICondition {
     
-    private Game _game;
     private int _min,_max;
     
-    public Score(Game game, int min, int max)
+    public Score(int min, int max)
     {
-        _game = game;
         _min = min;
         _max = max;
     }
     
-    public boolean test() 
+    public boolean test(Game game) 
     {
-        int score =_game.getScore();
+        int score =game.getScore();
         return (score >= _min) && (score <= _max);
     }
 }

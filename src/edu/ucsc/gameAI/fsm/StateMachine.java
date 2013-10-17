@@ -3,6 +3,7 @@ package edu.ucsc.gameAI.fsm;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import pacman.game.Game;
 import edu.ucsc.gameAI.IAction;
 
 /**
@@ -20,9 +21,10 @@ public class StateMachine implements IStateMachine {
      * 
      * @param initialState
      */
-    StateMachine(IState initialState){
+    public StateMachine(IState initialState){
         _initialState = initialState;
-        _currentState = _initialState;
+    }
+    public StateMachine(){
     }
     
     /**
@@ -32,11 +34,11 @@ public class StateMachine implements IStateMachine {
      *   state and any transitions, entrances and exits that may occur.
      * @return A collection of actions produced by evaluating the FSM.
      */
-    public Collection<IAction> update(){
+    public Collection<IAction> update(Game game){
         Collection<IAction> actions = new ArrayList<IAction>();
         Collection<ITransition> transitions = _currentState.getTransitions();
         for(ITransition trans : transitions){
-            if(trans.isTriggered()){
+            if(trans.isTriggered(game)){
                 //Add the current state's exit action
                 actions.add(_currentState.getExitAction());
                 //Add the transition action
@@ -60,5 +62,11 @@ public class StateMachine implements IStateMachine {
      */
     public IState getCurrentState(){
         return _currentState;
+    }
+
+    @Override
+    public void setCurrentState(IState state) {
+        // TODO Auto-generated method stub
+        _currentState = state;
     }
 }
