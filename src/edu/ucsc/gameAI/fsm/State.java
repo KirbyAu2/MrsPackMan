@@ -23,10 +23,8 @@ public class State implements IState {
      * @param exitAction sets the exit action that will be called when leaving this state
      * @param transitions sets the transitions to call from this state to another
      */
-    State(IAction entryAction, IAction exitAction, Collection<ITransition> transitions){
-        _entryAction = entryAction;
-        _exitAction = exitAction;
-        _transitions = transitions;
+    State(){
+        
     }
     
     /**
@@ -62,6 +60,30 @@ public class State implements IState {
      */
     public Collection<ITransition> getTransitions(){
         return _transitions;
+    }
+
+    @Override
+    public void setAction(IAction action) {
+        // TODO Auto-generated method stub
+        _currentAction = action;
+    }
+
+    @Override
+    public void setEntryAction(IAction action) {
+        // TODO Auto-generated method stub
+        _entryAction = action;
+    }
+
+    @Override
+    public void setExitAction(IAction action) {
+        // TODO Auto-generated method stub
+        _exitAction = action;
+    }
+
+    @Override
+    public void setTransitions(Collection<ITransition> trans) {
+        // TODO Auto-generated method stub
+        _transitions = trans;
     }
 }
 

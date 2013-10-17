@@ -1,5 +1,6 @@
 package edu.ucsc.gameAI.fsm;
 
+import pacman.game.Game;
 import edu.ucsc.gameAI.IAction;
 import edu.ucsc.gameAI.ICondition;
 
@@ -19,10 +20,7 @@ public class Transition implements ITransition {
      * @param action sets the action to be taken when this transition executes
      * @param condition sets the condition of when this transition is triggered
      */
-    Transition(IState targetState, IAction action, ICondition condition){
-        _targetState = targetState;
-        _action = action;
-        _condition = condition;
+    Transition(){
     }
     
     /**
@@ -49,11 +47,21 @@ public class Transition implements ITransition {
         _condition = condition;
     }
 
-    /**
-     * Determines if this transition is triggered.
-     * @return True if triggered, false if not.
-     */
-    public boolean isTriggered(){
-        return _condition.test();
+    @Override
+    public void setTargetState(IState targetState) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setAction(IAction action) {
+        // TODO Auto-generated method stub
+        _action = action;
+    }
+
+    @Override
+    public boolean isTriggered(Game game) {
+        // TODO Auto-generated method stub
+        return _condition.test(game);
     }
 }
