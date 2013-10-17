@@ -6,18 +6,16 @@ import pacman.game.Game;
 
 public class CurrentPacmanNodeIndex implements ICondition {
     
-    private Game _game;
     private int _index;
 
-    public CurrentPacmanNodeIndex(Game game, int index)
+    public CurrentPacmanNodeIndex(int index)
     {
-        _game = game;
         _index = index;
     }
     
     
-    public boolean test() 
+    public boolean test(Game game) 
     {
-        return ( _index == _game.getPacmanCurrentNodeIndex() );
+        return ( _index == game.getPacmanCurrentNodeIndex() );
     }
 }

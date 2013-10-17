@@ -5,17 +5,15 @@ import pacman.game.Game;
 
 public class IsPillStillAvailible implements ICondition {
     
-    private Game _game;
     private int _pillIndex;
     
-    public IsPillStillAvailible(Game game, int pillIndex)
+    public IsPillStillAvailible( int pillIndex)
     {
-        _game = game;
         _pillIndex = pillIndex;
     }
     
-    public boolean test() 
+    public boolean test(Game game) 
     {
-        return _game.isPillStillAvailable(_pillIndex);
+        return game.isPillStillAvailable(_pillIndex);
     }
 }

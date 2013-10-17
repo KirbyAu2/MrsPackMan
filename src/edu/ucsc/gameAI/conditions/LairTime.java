@@ -6,21 +6,19 @@ import pacman.game.Game;
 
 public class LairTime implements ICondition {
     
-    private Game _game;
     private GHOST _ghost;
     private int _min,_max;
     
-    public LairTime(Game game, GHOST ghost, int min, int max)
+    public LairTime(GHOST ghost, int min, int max)
     {
-        _game = game;
         _ghost = ghost;
         _min = min;
         _max = max;
     }
     
-    public boolean test() 
+    public boolean test(Game game) 
     {
-        int lairTime = _game.getGhostLairTime(_ghost);
+        int lairTime = game.getGhostLairTime(_ghost);
       
         return (lairTime >= _min) && (lairTime <= _max);
     }

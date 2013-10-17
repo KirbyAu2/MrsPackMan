@@ -5,17 +5,15 @@ import pacman.game.Game;
 
 public class LevelCount implements ICondition {
     
-    private Game _game;
     private int _level;
     
-    public LevelCount(Game game, int level)
+    public LevelCount(int level)
     {
-        _game = game;
         _level = level;
     }
     
-    public boolean test() 
+    public boolean test(Game game) 
     {
-        return (_game.getCurrentLevel() == _level);
+        return (game.getCurrentLevel() == _level);
     }
 }

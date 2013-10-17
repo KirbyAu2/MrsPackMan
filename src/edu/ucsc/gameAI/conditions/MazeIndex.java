@@ -5,17 +5,15 @@ import pacman.game.Game;
 
 public class MazeIndex implements ICondition {
     
-    private Game _game;
     private int _index;
     
-    public MazeIndex(Game game, int index)
+    public MazeIndex(int index)
     {
-        _game = game;
         _index = index;
     }
     
-    public boolean test() 
+    public boolean test(Game game) 
     {
-        return (_game.getMazeIndex() == _index);
+        return (game.getMazeIndex() == _index);
     }
 }
