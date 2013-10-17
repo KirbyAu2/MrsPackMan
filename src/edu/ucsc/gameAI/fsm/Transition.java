@@ -50,7 +50,7 @@ public class Transition implements ITransition {
     @Override
     public void setTargetState(IState targetState) {
         // TODO Auto-generated method stub
-        
+        _targetState = targetState;
     }
 
     @Override
