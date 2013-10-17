@@ -114,8 +114,8 @@ public class Evaluator
         if (!(new CurrentPacmanNodeIndex(game.getPacmanCurrentNodeIndex())).test(game))
             System.out.println("CurrentPacmanNodeIndex failed");
         if (!(new NumberOfLivesRemaining(
-                game.getPacmanNumberOfLivesRemaining(),
-                game.getPacmanNumberOfLivesRemaining() ).test(game)));
+                0,
+                game.getPacmanNumberOfLivesRemaining() ).test(game)))
             System.out.println("NumberOfLivesRemaining failed");
         if (!(new PacmanLastMove(game.getPacmanLastMoveMade()).test(game)))
             System.out.println("PacmanLastMove failed");
