@@ -36,7 +36,6 @@ public class StateMachine implements IStateMachine {
      * @return A collection of actions produced by evaluating the FSM.
      */
     public Collection<IAction> update(Game game){
-        
         Collection<IAction> actions = new LinkedList<IAction>();
         Collection<ITransition> transitions = _currentState.getTransitions();
         for(ITransition trans : transitions){
