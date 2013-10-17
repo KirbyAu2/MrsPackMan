@@ -21,9 +21,6 @@ public class StateMachine implements IStateMachine {
      * 
      * @param initialState
      */
-    public StateMachine(IState initialState){
-        _initialState = initialState;
-    }
     public StateMachine(){
     }
     
