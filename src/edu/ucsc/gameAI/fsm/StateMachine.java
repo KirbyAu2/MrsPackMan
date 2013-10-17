@@ -1,6 +1,5 @@
 package edu.ucsc.gameAI.fsm;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 
