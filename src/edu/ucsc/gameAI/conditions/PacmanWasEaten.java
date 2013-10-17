@@ -7,13 +7,12 @@ public class PacmanWasEaten implements ICondition {
     
     private Game _game;
     
-    public PacmanWasEaten(Game game)
+    public PacmanWasEaten()
     {
-        _game = game;
     }
     
-    public boolean test() 
+    public boolean test(Game game) 
     {
-        return _game.wasPacManEaten();
+        return game.wasPacManEaten();
     }
 }

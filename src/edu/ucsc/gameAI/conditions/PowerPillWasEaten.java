@@ -4,16 +4,13 @@ import edu.ucsc.gameAI.ICondition;
 import pacman.game.Game;
 
 public class PowerPillWasEaten implements ICondition {
-    
-    private Game _game;
-    
-    public PowerPillWasEaten(Game game)
+       
+    public PowerPillWasEaten()
     {
-        _game = game;
     }
     
-    public boolean test() 
+    public boolean test(Game game) 
     {
-        return _game.wasPowerPillEaten();
+        return game.wasPowerPillEaten();
     }
 }

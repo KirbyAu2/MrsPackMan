@@ -5,19 +5,17 @@ import pacman.game.Game;
 
 public class TimeOfLastGlobalReversal implements ICondition {
     
-    private Game _game;
     private int _min,_max;
     
-    public TimeOfLastGlobalReversal(Game game, int min, int max)
+    public TimeOfLastGlobalReversal(int min, int max)
     {
-        _game = game;
         _min = min;
         _max = max;
     }
     
-    public boolean test() 
+    public boolean test(Game game) 
     {
-        int timeOfLastGlobalReversal = _game.getTimeOfLastGlobalReversal();
+        int timeOfLastGlobalReversal = game.getTimeOfLastGlobalReversal();
         return (timeOfLastGlobalReversal >= _min) && (timeOfLastGlobalReversal <= _max);
     }
 }

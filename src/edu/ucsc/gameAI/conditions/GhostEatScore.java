@@ -5,19 +5,17 @@ import pacman.game.Game;
 
 public class GhostEatScore implements ICondition {
     
-    private Game _game;
     private int _min,_max;
     
-    public GhostEatScore(Game game, int min, int max)
+    public GhostEatScore(int min, int max)
     {
-        _game = game;
         _min = min;
         _max = max;
     }
     
-    public boolean test() 
+    public boolean test(Game game) 
     {
-        int edibleScore=_game.getGhostCurrentEdibleScore();
+        int edibleScore=game.getGhostCurrentEdibleScore();
         return (edibleScore >= _min) && (edibleScore <=_max);
     }
 }
