@@ -15,7 +15,6 @@ import edu.ucsc.gameAI.IAction;
  */
 public class StateMachine implements IStateMachine {
     private IState _currentState;
-    private IState _initialState;
     
     /**
      * 
@@ -36,14 +35,20 @@ public class StateMachine implements IStateMachine {
         Collection<ITransition> transitions = _currentState.getTransitions();
         for(ITransition trans : transitions){
             if(trans.isTriggered(game)){
-                //Add the current state's exit action
-                actions.add(_currentState.getExitAction());
-                //Add the transition action
-                actions.add(trans.getAction());
+            	if(_currentState.getExitAction() != null){
+                    //Add the current state's exit action
+                    actions.add(_currentState.getExitAction());
+            	}
+            	if(trans.getAction() != null){
+                    //Add the transition action
+            		actions.add(trans.getAction());
+            	}
                 //Set the current state to the new state
                 _currentState = trans.getTargetState();
-                //Add the entry action from the current state
-                actions.add(_currentState.getEntryAction());
+                if(_currentState.getEntryAction() != null){
+	                //Add the entry action from the current state
+	                actions.add(_currentState.getEntryAction());
+                }
                 break;
             }
         }

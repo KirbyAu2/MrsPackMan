@@ -1,59 +1,100 @@
 package edu.ucsc.gameAI.hfsm;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
+import pacman.game.Game;
 import edu.ucsc.gameAI.IAction;
-import edu.ucsc.gameAI.fsm.IState;
-import edu.ucsc.gameAI.fsm.ITransition;
 
-public class HState implements IState {
+public class HState extends HFSMBase implements IHState{
+    IAction _entryAction;
+    IAction _exitAction;
+    Collection<IHTransition> _transitions;
+    Collection<IHState> _states;
+    IHFSM _parent;
+    
+    HState(){
+        
+    }
+
+    @Override
+    public IResult update(Game game) {
+        IResult result = super.update(game);
+        return result;
+    }
+
+    @Override
+    public Collection<IHState> getStates() {
+        Collection<IHState> temp = new LinkedList<IHState>();
+        temp.add(this);
+        return temp;
+    }
+
+    @Override
+    public void setStates(Collection<IHState> states) {
+        // I have no clue why this is even a thing... A state doesn't have other states in it. Only a HFSM has other states in it
+        _states = states;
+    }
 
     @Override
     public IAction getAction() {
-        // TODO Auto-generated method stub
-        return null;
+        return _currentAction;
     }
 
     @Override
     public void setAction(IAction action) {
-        // TODO Auto-generated method stub
-
+        _currentAction = action;
     }
 
     @Override
     public IAction getEntryAction() {
-        // TODO Auto-generated method stub
-        return null;
+        return _entryAction;
     }
 
     @Override
     public void setEntryAction(IAction action) {
-        // TODO Auto-generated method stub
-
+        _entryAction = action;
     }
 
     @Override
     public IAction getExitAction() {
-        // TODO Auto-generated method stub
-        return null;
+        return _exitAction;
     }
 
     @Override
     public void setExitAction(IAction action) {
-        // TODO Auto-generated method stub
-
+        _exitAction = action;
     }
 
     @Override
-    public Collection<ITransition> getTransitions() {
-        // TODO Auto-generated method stub
-        return null;
+    public Collection<IHTransition> getTransitions() {
+        if(_transitions == null){
+            _transitions = new LinkedList<IHTransition>();
+        }
+        return _transitions;
     }
 
     @Override
-    public void setTransitions(Collection<ITransition> trans) {
-        // TODO Auto-generated method stub
+    public void setTransitions(Collection<IHTransition> transitions) {
+        _transitions = transitions;
+    }
 
+    @Override
+    public void addTransition(IHTransition transition) {
+        if(_transitions == null){
+            _transitions = new LinkedList<IHTransition>();
+        }
+        _transitions.add(transition);
+    }
+
+    @Override
+    public IHFSM getParent() {
+        return _parent;
+    }
+
+    @Override
+    public void setParent(IHFSM parent) {
+        _parent = parent;
     }
 
 }
