@@ -98,20 +98,25 @@ public class HFSM extends HFSMBase implements IHFSM {
                 if(result.getLevel() == 0){
                     //We are in the same level
                     IHState targetState = trans.getTargetState();
-                    result.addAction(_currentState.getExitAction());
-                    result.addAction(trans.getAction());
-                    result.addAction(targetState.getEntryAction());
+                    if(_currentState.getExitAction() != null)
+                        result.addAction(_currentState.getExitAction());
+                    if(trans.getAction() != null)
+                        result.addAction(trans.getAction());
+                    if(targetState.getEntryAction() != null)
+                        result.addAction(targetState.getEntryAction());
                     //Set current state to the target state
                     _currentState = targetState;
                     //Add normal action if this is a state
-                    result.addAction(getAction());
+                    if(getAction() != null)
+                        result.addAction(getAction());
                     //Need to clear the transition so it doesn't trigger again
                     result.setTransition(null);
                     break;
                 }else if(result.getLevel() > 0){
                     //It needs to go to a higher state
                     //exit our current state
-                    result.addAction(_currentState.getExitAction());
+                    if(_currentState.getExitAction() != null)
+                        result.addAction(_currentState.getExitAction());
                     _currentState = null;
                     //decrease the number of levels to go
                     result.setLevel(result.getLevel()-1);
@@ -120,7 +125,8 @@ public class HFSM extends HFSMBase implements IHFSM {
                     //We now need to go down
                     IHState targetState = result.getTransition().getTargetState();
                     IHFSM targetMachine = targetState.getParent();
-                    result.addAction(result.getTransition().getAction());
+                    if(result.getTransition().getAction() != null)
+                        result.addAction(result.getTransition().getAction());
                     result.addActions(targetMachine.updateDown(targetState, -result.getLevel(), game));
                     //Need to clear the transition so it doesn't trigger again
                     result.setTransition(null);
@@ -131,7 +137,8 @@ public class HFSM extends HFSMBase implements IHFSM {
         //There was no transition
         if(result.getTransition() == null){
             result = _currentState.update(game);
-            result.addAction(getAction());
+            if(getAction() != null)
+                result.addAction(getAction());
         }
         return result;        
     }
