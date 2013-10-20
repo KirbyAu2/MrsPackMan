@@ -6,12 +6,12 @@ import java.util.LinkedList;
 import edu.ucsc.gameAI.IAction;
 
 public class Result implements IResult{
-	Collection<IAction> _actions;
-	IHTransition _transition;
-	int _level;
-	
-	Result(){
-		
+    Collection<IAction> _actions;
+    IHTransition _transition;
+    int _level;
+    
+    Result(){
+	    
 	}
     
     public Collection<IAction> getActions(){
