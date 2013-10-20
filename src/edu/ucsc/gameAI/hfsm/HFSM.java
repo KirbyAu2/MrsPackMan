@@ -8,14 +8,14 @@ import edu.ucsc.gameAI.IAction;
 import edu.ucsc.gameAI.fsm.ITransition;
 
 public class HFSM extends HFSMBase implements IHFSM {
-	Collection<IHState> _states;
-	Collection<IHTransition> _transitions;
-	IHState _initialState;
-	IHState _currentState;
-	IAction _action;
-	IAction _entryAction;
-	IAction _exitAction;
-	IHFSM _parent;
+    Collection<IHState> _states;
+    Collection<IHTransition> _transitions;
+    IHState _initialState;
+    IHState _currentState;
+    IAction _action;
+    IAction _entryAction;
+    IAction _exitAction;
+    IHFSM _parent;
 	
     @Override
     public Collection<IHState> getStates() {
