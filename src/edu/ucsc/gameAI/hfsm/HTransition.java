@@ -5,53 +5,53 @@ import edu.ucsc.gameAI.IAction;
 import edu.ucsc.gameAI.ICondition;
 
 public class HTransition implements IHTransition {
+    IHState _targetState;
+    IAction _action;
+    ICondition _condition;
+    int _level;
+    
+    HTransition(){
+        
+    }
 
     @Override
     public IHState getTargetState() {
-        // TODO Auto-generated method stub
-        return null;
+        return _targetState;
     }
 
     @Override
     public void setTargetState(IHState targetState) {
-        // TODO Auto-generated method stub
-
+        _targetState = targetState;
     }
 
     @Override
     public IAction getAction() {
-        // TODO Auto-generated method stub
-        return null;
+        return _action;
     }
 
     @Override
     public void setAction(IAction action) {
-        // TODO Auto-generated method stub
-
+        _action = action;
     }
 
     @Override
     public void setCondition(ICondition condition) {
-        // TODO Auto-generated method stub
-
+        _condition = condition;
     }
 
     @Override
     public boolean isTriggered(Game game) {
-        // TODO Auto-generated method stub
-        return false;
+        return _condition.test(game);
     }
 
     @Override
     public int getLevel() {
-        // TODO Auto-generated method stub
-        return 0;
+        return _level;
     }
 
     @Override
     public void setLevel(int level) {
-        // TODO Auto-generated method stub
-
+        _level = level;
     }
 
 }
