@@ -13,7 +13,7 @@ public class HState extends HFSMBase implements IHState{
     Collection<IHState> _states;
     IHFSM _parent;
     
-    HState(){
+    public HState(String string){
         
     }
 

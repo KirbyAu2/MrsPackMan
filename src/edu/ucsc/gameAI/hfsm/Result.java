@@ -15,6 +15,9 @@ public class Result implements IResult{
 	}
     
     public Collection<IAction> getActions(){
+        if(_actions == null){
+            _actions = new LinkedList<IAction>();
+        }
         return _actions;
     }
     

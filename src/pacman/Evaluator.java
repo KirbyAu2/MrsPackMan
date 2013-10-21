@@ -41,6 +41,7 @@ import edu.ucsc.gameAI.hfsm.HTransition;
 import edu.ucsc.gameAI.hfsm.IHFSM;
 import edu.ucsc.gameAI.hfsm.IHState;
 import edu.ucsc.gameAI.hfsm.IHTransition;
+import edu.ucsc.gameAI.hfsm.IResult;
 
 /**
  * This class may be used to execute the game in timed or un-timed modes, with or without
@@ -118,7 +119,7 @@ public class Evaluator
 		statesUpIsUp = new ArrayList<IHState>();		
 		statesUpIsDown = new ArrayList<IHState>();
 		
-		/*
+		
 		//create states and add actions
 		neutralUU = new HState("neutralUU");
 		neutralUU.setAction(new NeutralAction());
@@ -183,7 +184,7 @@ public class Evaluator
 		
 		// for testing hfsm
 		bLeftState = true;
-		*/
+		
 	}
 	
     // could be a function run every frame of runExperiment, accepting game as a parameter
