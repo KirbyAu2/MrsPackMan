@@ -41,6 +41,7 @@ import edu.ucsc.gameAI.hfsm.HTransition;
 import edu.ucsc.gameAI.hfsm.IHFSM;
 import edu.ucsc.gameAI.hfsm.IHState;
 import edu.ucsc.gameAI.hfsm.IHTransition;
+import edu.ucsc.gameAI.hfsm.IResult;
 
 /**
  * This class may be used to execute the game in timed or un-timed modes, with or without
