@@ -73,7 +73,7 @@ public class Executor
 
         //exec.runGameTimed(new StarterPacMan(),new EvaluationAgent(),visual);
         //exec.runGameTimed(new StarterPacMan(),new MyGhosts(),visual,bRunUnitTests);
-        exec.runGameTimed(new HumanController(new KeyBoardInput()),new MyGhosts(),visual,bRunUnitTests);
+        exec.runGameTimed(new MyPacMan(),new MyGhosts(),visual,bRunUnitTests);
 
 //        exec.runGameTimed(new HumanController(new KeyBoardInput()),new StarterGhosts(),visual);    
         //*/
@@ -203,8 +203,8 @@ public class Executor
             if(visual)
                 gv.repaint();
             
-            if (bRunUnitTests)
-                eval.runUnitTests(game,pacManController,ghostController);
+            //if (bRunUnitTests)
+              //  eval.runUnitTests(game,pacManController,ghostController);
 
         }
         

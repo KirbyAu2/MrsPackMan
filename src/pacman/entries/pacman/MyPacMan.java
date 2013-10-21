@@ -1,5 +1,9 @@
 package pacman.entries.pacman;
 
+import edu.ucsc.gameAI.Collect;
+import edu.ucsc.gameAI.IAction;
+import edu.ucsc.gameAI.MoveTowardsNode;
+import edu.ucsc.gameAI.decisionTrees.binary.BinaryDecision;
 import pacman.controllers.Controller;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
@@ -12,13 +16,15 @@ import pacman.game.Game;
 public class MyPacMan extends Controller<MOVE>
 {
 	private MOVE myMove=MOVE.NEUTRAL;
+	private BinaryDecision _tree;
+	
 	
 	public MOVE getMove(Game game, long timeDue) 
 	{
 		//Place your game logic here to play the game as Ms Pac-Man
-		myMove = MOVE.UP;
-		
-		
+		Collect goToNode = new Collect(game);
+		goToNode.makeDecision(game);
+		myMove = goToNode.getMove();
 		return myMove;
 	}
 }
