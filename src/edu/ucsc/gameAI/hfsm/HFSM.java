@@ -16,6 +16,11 @@ public class HFSM extends HFSMBase implements IHFSM {
     IAction _entryAction;
     IAction _exitAction;
     IHFSM _parent;
+    
+    public HFSM(){
+        _states = new LinkedList<IHState>();
+        _transitions = new LinkedList<IHTransition>();
+    }
 	
     @Override
     public Collection<IHState> getStates() {
