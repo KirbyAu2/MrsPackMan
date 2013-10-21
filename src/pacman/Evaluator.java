@@ -122,14 +122,14 @@ public class Evaluator
 		
 		//create states and add actions
 		neutralUU = new HState("neutralUU");
-		//neutralUU.setAction(new NeutralAction());
+		neutralUU.setAction(new NeutralAction());
 		upUU = new HState("upUU");
 		upUU.setAction(new GoUpAction());
 		downUU = new HState("downUU");
 		downUU.setAction(new GoDownAction());
 		
 		neutralUD = new HState("neutralUD");
-		//neutralUD.setAction(new NeutralAction());
+		neutralUD.setAction(new NeutralAction());
 		upUD = new HState("upUD");
 		upUD.setAction(new GoUpAction());
 		downUD = new HState("downUD");
@@ -323,7 +323,6 @@ public class Evaluator
 			
 		// hfsm
 		boolean bCheck = true;
-		IResult r = hfsm.update(game);
 		actions = hfsm.update(game).getActions();
 		if (game.getPacmanLastMoveMade() == MOVE.LEFT && !bLeftState)
 		{
