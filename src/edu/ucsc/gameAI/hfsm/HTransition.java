@@ -3,6 +3,7 @@ package edu.ucsc.gameAI.hfsm;
 import pacman.game.Game;
 import edu.ucsc.gameAI.IAction;
 import edu.ucsc.gameAI.ICondition;
+import edu.ucsc.gameAI.conditions.PacmanLastMove;
 
 public class HTransition implements IHTransition {
     IHState _targetState;
@@ -10,8 +11,9 @@ public class HTransition implements IHTransition {
     ICondition _condition;
     int _level;
     
-    HTransition(){
-        
+    public HTransition(IHState state, ICondition condition){
+        setTargetState(state);
+        setCondition(condition);
     }
 
     @Override
