@@ -53,7 +53,7 @@ public class Executor
         
         //run multiple games in batch mode - good for testing.
         int numTrials=10000;
-        //exec.runExperiment(new StarterPacMan(),new Legacy2TheReckoning(),numTrials);
+        exec.runExperiment(new RandomPacMan(),new Legacy2TheReckoning(),numTrials);
          
         
         /*
@@ -73,9 +73,13 @@ public class Executor
 
         //exec.runGameTimed(new StarterPacMan(),new EvaluationAgent(),visual);
         //exec.runGameTimed(new StarterPacMan(),new MyGhosts(),visual,bRunUnitTests);
-        exec.runGameTimed(new HumanController(new KeyBoardInput()),new MyGhosts(),visual,bRunUnitTests);
+        //exec.runGameTimed(new HumanController(new KeyBoardInput()),new MyGhosts(),visual,bRunUnitTests);
 
-//        exec.runGameTimed(new HumanController(new KeyBoardInput()),new StarterGhosts(),visual);    
+        //exec.runGameTimed(new HumanController(new KeyBoardInput()),new StarterGhosts(),visual);    
+        
+        // Tests for running Our Controllers
+        //exec.runGameTimed(new MyPacMan(), new Legacy2TheReckoning(), visual, bRunUnitTests);
+      //  exec.runGameTimed(new StarterPacMan(), new MyGhosts(), visual, bRunUnitTests);
         //*/
         
         /*
