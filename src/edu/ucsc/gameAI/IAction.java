@@ -10,13 +10,13 @@ import pacman.game.Game;
  * @author Josh McCoy
  */
 public interface IAction {
-    
-    /**
-     * Performs the action associated with this Action node.
-     */
-    public void doAction();
-    
-    public MOVE getMove();
+	
+	/**
+	 * Performs the action associated with this Action node.
+	 */
+	public void doAction();
+	
+	public MOVE getMove();
 
     public MOVE getMove(Game game);
 }

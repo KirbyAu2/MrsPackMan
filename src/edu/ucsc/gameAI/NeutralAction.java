@@ -6,24 +6,24 @@ import edu.ucsc.gameAI.decisionTrees.binary.IBinaryNode;
 
 public class NeutralAction implements IAction, IBinaryNode {
 
-    public void doAction() {
-        // TODO Auto-generated method stub
-        
-    }
-    
-    public IAction makeDecision() {return this;}
+	public void doAction() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public IAction makeDecision(Game game) {
+		return this;
+	}
+
+	@Override
+	public MOVE getMove() {
+		return MOVE.NEUTRAL;
+	}
 
     @Override
-    public IAction makeDecision(Game game) {
-        // TODO Auto-generated method stub
-        return this;
-    }
-
-    @Override
-    public MOVE getMove() {
-        return MOVE.NEUTRAL;
-    }
     public MOVE getMove(Game game) {
+        // TODO Auto-generated method stub
         return MOVE.NEUTRAL;
     }
 }
