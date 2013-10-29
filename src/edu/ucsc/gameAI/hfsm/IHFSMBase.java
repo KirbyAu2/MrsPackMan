@@ -5,8 +5,8 @@ import edu.ucsc.gameAI.IAction;
 
 public interface IHFSMBase {
 
-    public IAction getAction();
-    
-    public IResult update(Game game);
-    
+	public IAction getAction();
+	
+	public IResult update(Game game);
+	
 }

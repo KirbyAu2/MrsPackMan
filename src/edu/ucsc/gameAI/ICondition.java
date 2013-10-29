@@ -10,10 +10,10 @@ import pacman.game.Game;
  */
 
 public interface ICondition {
-    /**
-     * Evaluates the decision node's condition and returns the true or false result.
-     * @return Result of evaluating the conditional expression.
-     */
-    public boolean test(Game game);
-    
+	/**
+	 * Evaluates the decision node's condition and returns the true or false result.
+	 * @return Result of evaluating the conditional expression.
+	 */
+	public boolean test(Game game);
+	
 }

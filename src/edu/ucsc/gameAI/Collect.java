@@ -162,4 +162,7 @@ public class Collect implements IAction, IBinaryNode {
     public MOVE getMove() {
         return this._move;
     }
+    public MOVE getMove(Game game) {
+        return this._move;
+    }
 }
