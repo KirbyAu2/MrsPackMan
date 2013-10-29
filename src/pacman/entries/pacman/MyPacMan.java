@@ -26,14 +26,16 @@ public class MyPacMan extends Controller<MOVE>
 		if (this._ic == null){
 			this._ic = new IdentifyClusters(game);
 		}
-		this._ic.colorClusters(game);
+		//this._ic.colorClusters(game);
 		Collect goToNode = new Collect(game);
-		goToNode.makeDecision(game);
-		myMove = goToNode.getMove();
+		//goToNode.makeDecision(game);
+		//myMove = goToNode.getMove();
 		//IdentifyClusters ic = new IdentifyClusters(game);
 		if(game.wasPillEaten() || game.wasPowerPillEaten()){
 			this._ic.pillEaten(game);
 		}
+		this._ic.makeDecision(game);
+		myMove = this._ic.getMove();
 		return myMove;
 	}
 }

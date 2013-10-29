@@ -73,7 +73,7 @@ public class Executor
 
         //exec.runGameTimed(new StarterPacMan(),new EvaluationAgent(),visual);
         //exec.runGameTimed(new StarterPacMan(),new MyGhosts(),visual,bRunUnitTests);
-        exec.runGameTimed(new MyPacMan(),new MyGhosts(),visual,bRunUnitTests);
+        exec.runGameTimed(new MyPacMan(),new Legacy2TheReckoning(),visual,bRunUnitTests);
 
 //        exec.runGameTimed(new HumanController(new KeyBoardInput()),new StarterGhosts(),visual);    
         //*/
