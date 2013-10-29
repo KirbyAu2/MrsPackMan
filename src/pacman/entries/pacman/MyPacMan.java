@@ -2,6 +2,7 @@ package pacman.entries.pacman;
 
 import edu.ucsc.gameAI.Collect;
 import edu.ucsc.gameAI.IAction;
+import edu.ucsc.gameAI.IdentifyClusters;
 import edu.ucsc.gameAI.MoveTowardsNode;
 import edu.ucsc.gameAI.decisionTrees.binary.BinaryDecision;
 import pacman.controllers.Controller;
@@ -17,14 +18,22 @@ public class MyPacMan extends Controller<MOVE>
 {
 	private MOVE myMove=MOVE.NEUTRAL;
 	private BinaryDecision _tree;
-	
+	private IdentifyClusters _ic;
 	
 	public MOVE getMove(Game game, long timeDue) 
 	{
 		//Place your game logic here to play the game as Ms Pac-Man
+		if (this._ic == null){
+			this._ic = new IdentifyClusters(game);
+		}
+		this._ic.colorClusters(game);
 		Collect goToNode = new Collect(game);
 		goToNode.makeDecision(game);
 		myMove = goToNode.getMove();
+		//IdentifyClusters ic = new IdentifyClusters(game);
+		if(game.wasPillEaten() || game.wasPowerPillEaten()){
+			this._ic.pillEaten(game);
+		}
 		return myMove;
 	}
 }
