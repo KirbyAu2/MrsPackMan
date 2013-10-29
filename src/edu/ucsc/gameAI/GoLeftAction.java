@@ -23,4 +23,7 @@ public class GoLeftAction implements IAction, IBinaryNode {
     public MOVE getMove() {
         return MOVE.LEFT;
     }
+    public MOVE getMove(Game game) {
+        return MOVE.LEFT;
+    }
 }

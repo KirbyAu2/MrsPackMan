@@ -52,8 +52,9 @@ public class Executor
         Executor exec=new Executor();
         
         //run multiple games in batch mode - good for testing.
-        int numTrials=10000;
-        exec.runExperiment(new RandomPacMan(),new Legacy2TheReckoning(),numTrials);
+        //int numTrials=10000;
+        int numTrials=100;
+        exec.runExperiment(new StarterPacMan(),new MyGhosts(),numTrials);
          
         
         /*
@@ -72,8 +73,12 @@ public class Executor
 //        exec.runGameTimed(new NearestPillPacMan(),new AggressiveGhosts(),visual);
 
         //exec.runGameTimed(new StarterPacMan(),new EvaluationAgent(),visual);
-        //exec.runGameTimed(new StarterPacMan(),new MyGhosts(),visual,bRunUnitTests);
+        exec.runGameTimed(new StarterPacMan(),new MyGhosts(),visual,bRunUnitTests);
+
         //exec.runGameTimed(new HumanController(new KeyBoardInput()),new MyGhosts(),visual,bRunUnitTests);
+
+        //exec.runGameTimed(new StarterPacMan(),new MyGhosts(),visual,bRunUnitTests);
+
 
         //exec.runGameTimed(new HumanController(new KeyBoardInput()),new StarterGhosts(),visual);    
         
@@ -207,8 +212,8 @@ public class Executor
             if(visual)
                 gv.repaint();
             
-            if (bRunUnitTests)
-                eval.runUnitTests(game,pacManController,ghostController);
+            //if (bRunUnitTests)
+              //  eval.runUnitTests(game,pacManController,ghostController);
 
         }
         
