@@ -13,9 +13,9 @@ import edu.ucsc.gameAI.IAction;
  */
 
 public interface IBinaryNode {
-    /**
-     * Recurses through the binary tree until a leaf/action node is reached.
-     * @return The terminal Action of evaluate the binary decision tree.
-     */
-    public IAction makeDecision(Game game);
+	/**
+	 * Recurses through the binary tree until a leaf/action node is reached.
+	 * @return The terminal Action of evaluate the binary decision tree.
+	 */
+	public IAction makeDecision(Game game);
 }

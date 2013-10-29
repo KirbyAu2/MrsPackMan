@@ -6,21 +6,24 @@ import edu.ucsc.gameAI.decisionTrees.binary.IBinaryNode;
 
 public class GoRightAction implements IAction, IBinaryNode {
 
-    public void doAction() {
-        // TODO Auto-generated method stub
-        
-    }
-    
-    public IAction makeDecision() {return this;}
+	public void doAction() {
+	}
+	
+	public IAction makeDecision() {return this;}
+
+	@Override
+	public IAction makeDecision(Game game) {
+		return this;
+	}
+
+	@Override
+	public MOVE getMove() {
+		return MOVE.RIGHT;
+	}
 
     @Override
-    public IAction makeDecision(Game game) {
+    public MOVE getMove(Game game) {
         // TODO Auto-generated method stub
-        return this;
-    }
-
-    @Override
-    public MOVE getMove() {
         return MOVE.RIGHT;
     }
 }
