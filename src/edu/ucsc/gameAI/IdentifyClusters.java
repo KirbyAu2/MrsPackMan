@@ -23,9 +23,9 @@ public class IdentifyClusters implements IAction, IBinaryNode {
 	private Hashtable<Integer,ArrayList<Node>> _clustersTable = new Hashtable<Integer,ArrayList<Node>>();
 	private Hashtable<Integer, Boolean> _leafList = new Hashtable<Integer, Boolean>();
 	private int aStarCount = 0;
+	private Boolean initd = false;
 	
-	public IdentifyClusters(Game game){
-		initCluster(game);
+	public IdentifyClusters(){
 		//colorClusters(game);
 	}
 	
@@ -270,8 +270,6 @@ public class IdentifyClusters implements IAction, IBinaryNode {
 		    						if(ghostPath.length < tmpPath.length){
 		    							bad = true;
 		    						}
-	    						}else{
-	    							System.out.println("WTF");
 	    						}
 	    					}
     					}
@@ -318,6 +316,21 @@ public class IdentifyClusters implements IAction, IBinaryNode {
 
     @Override
     public MOVE getMove() {
+        return this._move;
+    }
+
+    @Override
+    public MOVE getMove(Game game) {
+        if(!initd){
+            initd = true;
+            initCluster(game);
+        }
+        // TODO Auto-generated method stub
+        //if(game.wasPillEaten() || game.wasPowerPillEaten()){
+            this.pillEaten(game);
+        //}
+        System.out.println("PILL EATEN");
+        this.makeDecision(game);
         return this._move;
     }
 }

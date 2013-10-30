@@ -63,7 +63,7 @@ public class Executor
 		//int numTrials=10000;
 		int numTrials=100;
 		//exec.runExperiment(new StarterPacMan(),new Legacy2TheReckoning(),numTrials);
-		exec.runExperiment(new StarterPacMan() , new MyGhosts(), numTrials);
+		//exec.runExperiment(new StarterPacMan() , new MyGhosts(), numTrials);
 		
 		/*
 		//run a game in synchronous mode: game waits until controllers respond.
@@ -83,10 +83,10 @@ public class Executor
 		//exec.runGameTimed(new StarterPacMan(),new Legacy2TheReckoning(),visual,bRunUnitTests);
 		
 		// mypacman testing
-		//exec.runGameTimed(new MyPacMan(),new Legacy2TheReckoning(),visual,bRunUnitTests);
+		exec.runGameTimed(new MyPacMan(),new Legacy2TheReckoning(),visual,bRunUnitTests);
 
 		// myghost testing
-		exec.runGameTimed(new StarterPacMan(),new MyGhosts(),visual,bRunUnitTests);
+		//exec.runGameTimed(new StarterPacMan(),new MyGhosts(),visual,bRunUnitTests);
 		
 		// for playing pacman with keyboard
 		//exec.runGameTimed(new HumanController(new KeyBoardInput()),new Legacy2TheReckoning(),visual,bRunUnitTests);
