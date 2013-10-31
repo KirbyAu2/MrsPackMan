@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import edu.ucsc.gameAI.Collect;
+import edu.ucsc.gameAI.EatGhosts;
 import edu.ucsc.gameAI.IAction;
 import edu.ucsc.gameAI.IdentifyClusters;
 import edu.ucsc.gameAI.MoveTowardsNode;
 import edu.ucsc.gameAI.conditions.GhostNearPacman;
+import edu.ucsc.gameAI.conditions.NoMoreEdibleGhosts;
+import edu.ucsc.gameAI.conditions.PowerPillWasEaten;
 import edu.ucsc.gameAI.decisionTrees.binary.BinaryDecision;
 import pacman.controllers.Controller;
 import pacman.game.Constants.MOVE;
@@ -31,22 +34,26 @@ public class MyPacMan extends Controller<MOVE>
 	private StateMachine _stateMachine;
 	private State _seekClusters;
 	private State _run;
-	private State _powerPillTime;
+	private State _eatGhosts;
 	
 	public MyPacMan(){
 	    _stateMachine = new StateMachine();
 	    _seekClusters = new State();
 	    _run = new State();
-	    _powerPillTime = new State();
+	    _eatGhosts = new State();
 	    _ic = new IdentifyClusters();
 	    
 	    //Seek Clusters State
 	    _seekClusters.setAction(_ic);
-	    Transition scTransition = new Transition();
+	    /*Transition scTransition = new Transition();
 	    scTransition.setCondition(new GhostNearPacman(5));
-	    scTransition.setTargetState(_seekClusters);
+	    scTransition.setTargetState(_seekClusters);*/
+        Transition powerPillTransition = new Transition();
+        powerPillTransition.setTargetState(_eatGhosts);
+        powerPillTransition.setCondition(new PowerPillWasEaten());
 	    Collection<ITransition> scTransCollection = new ArrayList<ITransition>();
-	    scTransCollection.add(scTransition);
+	    scTransCollection.add(powerPillTransition);
+	    //scTransCollection.add(scTransition);
 	    _seekClusters.setTransitions(scTransCollection);
 	    
 	    _stateMachine.setCurrentState(_seekClusters);
@@ -54,18 +61,21 @@ public class MyPacMan extends Controller<MOVE>
 	    //Run state
 	    
 	    
-	    
-	    //Power Pill Near!
-	    
-	    
 	    //Eat Ghosts
+	    _eatGhosts.setAction(new EatGhosts());
+	    Transition egTrans = new Transition();
+	    egTrans.setCondition(new NoMoreEdibleGhosts());
+	    egTrans.setTargetState(_seekClusters);
+	    Collection<ITransition> egTransCollection = new ArrayList<ITransition>();
+	    egTransCollection.add(egTrans);
+	    _eatGhosts.setTransitions(egTransCollection);
 	    
 	}
 	
 	public MOVE getMove(Game game, long timeDue) 
 	{
 	    Collection<IAction> actions = _stateMachine.update(game);
-	    System.out.println(actions);
+	    //System.out.println(actions);
 	    for(IAction a : actions){
 	        myMove = a.getMove(game);
 	    }

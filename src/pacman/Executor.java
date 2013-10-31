@@ -77,7 +77,7 @@ public class Executor
 		boolean visual=true;
 		
 		// run unit tests during execution
-		boolean bRunUnitTests=true;
+		boolean bRunUnitTests=false;
 		
 		
 		//exec.runGameTimed(new StarterPacMan(),new Legacy2TheReckoning(),visual,bRunUnitTests);
