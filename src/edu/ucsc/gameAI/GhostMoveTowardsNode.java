@@ -16,8 +16,8 @@ public class GhostMoveTowardsNode implements IAction, IBinaryNode {
     public GhostMoveTowardsNode(Game game, GHOST ghost, int TargetNodeIndex) {
         this._ghost = ghost;
         this._target = TargetNodeIndex;
-       // this._aStar = new AStar();
-       // this._aStar.createGraph(game.getCurrentMaze().graph);
+        this._move = MOVE.NEUTRAL;
+        // this._aStar.createGraph(game.getCurrentMaze().graph);
     }
 
     public void doAction() {
@@ -32,15 +32,10 @@ public class GhostMoveTowardsNode implements IAction, IBinaryNode {
     // make decision must be called before getMove()
     @Override
     public IAction makeDecision(Game game) {
-        //System.out.println("Inside GhostMoveTowards makeDecision");
-////////A* option
-//    	int startIndex = game.getGhostCurrentNodeIndex(_ghost);
-//    	MOVE lastMoveMade = game.getGhostLastMoveMade(_ghost);
-//    	int[] path = this._aStar.computePathsAStar(startIndex, this._target, lastMoveMade, game);
-//    	this._move = this.getMoveFromPath(game, path);
-    	this._move = game.getApproximateNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(_ghost), 
-    	        game.getPacmanCurrentNodeIndex(), 
-    	        game.getGhostLastMoveMade(_ghost), DM.EUCLID);
+        this._move = game.getApproximateNextMoveTowardsTarget(
+                game.getGhostCurrentNodeIndex(_ghost),
+                game.getPacmanCurrentNodeIndex(),
+                game.getGhostLastMoveMade(_ghost), DM.EUCLID);
         return this;
     }
 
@@ -66,10 +61,64 @@ public class GhostMoveTowardsNode implements IAction, IBinaryNode {
     public MOVE getMove() {
         return this._move;
     }
-    public MOVE getMove(Game game) {  
-        this._move = game.getApproximateNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(_ghost), 
-                game.getPacmanCurrentNodeIndex(), 
-                game.getGhostLastMoveMade(_ghost), DM.EUCLID);        
-        return this._move;     
+
+    public MOVE getMove(Game game) {
+        int curPacmanIndex = game.getPacmanCurrentNodeIndex();
+        int curGhostIndex = game.getGhostCurrentNodeIndex(_ghost);
+        MOVE lastPacmanMove = game.getPacmanLastMoveMade();
+        MOVE lastGhostMove = game.getGhostLastMoveMade(_ghost);
+        int closeEnough = 70;
+
+        // If the first or last ghost in the pack, move directly to PacMan
+        //if (_ghost.name() == "PINKY" || _ghost.name() == "BLINKY") {          
+            //this._move = game.getNextMoveTowardsTarget(curGhostIndex,
+            //        curPacmanIndex, lastGhostMove, DM.MANHATTAN);
+             this._move = game.getNextMoveTowardsTarget(curGhostIndex,
+             curPacmanIndex, lastGhostMove, DM.EUCLID);
+        //} else {
+        //    this._move = game.getNextMoveTowardsTarget(curGhostIndex,
+        //            curPacmanIndex, lastGhostMove, DM.MANHATTAN);
+            
+        //}
+            
+          /*  // Move the other ghost into a flanking position
+                // Get the current powerpills that pacman will go after
+            int pillIndices[] = game.getActivePowerPillsIndices();
+
+            if (pillIndices.length == 0) {// If no powerPills are left, just
+                                          // make the direct move
+                this._move = game
+                        .getApproximateNextMoveTowardsTarget(curGhostIndex,
+                                curPacmanIndex, lastGhostMove, DM.EUCLID);
+            } else {// Find the nearest powerPill and move towards it
+                int shortestPath = 9000;
+                int shortestInt = -1;
+                int dist = 0;
+                for (int i = 0; i < pillIndices.length; i++) {
+                    dist = game.getShortestPathDistance(curPacmanIndex,
+                            pillIndices[i], lastPacmanMove);
+                    if (dist < shortestPath) {
+                        shortestPath = dist;
+                        shortestInt = i;
+                    }
+                }
+                System.out.println("Shortest Path is "+shortestPath);
+                int ghostToPillDist = game.getShortestPathDistance(curGhostIndex, 
+                        pillIndices[shortestInt], lastGhostMove);
+                int ghostToPacmanDist = game.getShortestPathDistance(curGhostIndex, 
+                        pillIndices[shortestInt], lastGhostMove);
+                if((ghostToPillDist > ghostToPacmanDist) || 
+                        (ghostToPacmanDist < closeEnough) || 
+                        (ghostToPillDist < closeEnough)){
+                    // If ghost is close enough to pacman's next powerPill
+                    // break off to chase pacman instead
+                    this._move = game.getNextMoveTowardsTarget(curGhostIndex,
+                            curPacmanIndex, lastGhostMove, DM.EUCLID);
+                }// Otherwise go towards the powerpill
+                this._move = game.getNextMoveTowardsTarget(curGhostIndex,
+                        pillIndices[shortestInt], DM.EUCLID); 
+            }
+        }*/
+        return this._move;
     }
 }
