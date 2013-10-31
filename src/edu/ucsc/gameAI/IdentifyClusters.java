@@ -23,8 +23,11 @@ public class IdentifyClusters implements IAction, IBinaryNode {
 	private Hashtable<Integer,ArrayList<Node>> _clustersTable = new Hashtable<Integer,ArrayList<Node>>();
 	private Hashtable<Integer, Boolean> _leafList = new Hashtable<Integer, Boolean>();
 	private int aStarCount = 0;
+	private PacAStar _aStar;
 	
 	public IdentifyClusters(Game game){
+		this._aStar = new PacAStar();
+		this._aStar.createGraph(game.getCurrentMaze().graph);
 		initCluster(game);
 		//colorClusters(game);
 	}
@@ -74,7 +77,7 @@ public class IdentifyClusters implements IAction, IBinaryNode {
 					
 			}
 			GameView.addPoints(game, Color.LIGHT_GRAY, leaves);
-			System.out.println("IS ZERO THERE? : " + _leafList.get(0));
+			//System.out.println("IS ZERO THERE? : " + _leafList.get(0));
 		}
 	}
 	
@@ -166,10 +169,10 @@ public class IdentifyClusters implements IAction, IBinaryNode {
 					}
 				}
 			}*/
-			System.out.println(tmpNode.neighbourhood);
-			System.out.println(pillIndex);
+			//System.out.println(tmpNode.neighbourhood);
+			//System.out.println(pillIndex);
 			ArrayList<Node> newCluster = new ArrayList<Node>();
-			System.out.println("neighbor: "+tmpNode.nodeIndex);
+			//System.out.println("neighbor: "+tmpNode.nodeIndex);
 			split(tmpNode, newCluster, tmpCluster, game);
 			if(newCluster.size() != 0){
 				_clusters.add(newCluster);
@@ -193,7 +196,7 @@ public class IdentifyClusters implements IAction, IBinaryNode {
 			Node neighbor = _nodesTable.get(neighborIndex);
 			if(oldMcCluster.contains(neighbor)){
 				if(neighbor.nodeIndex == 169){
-					System.out.println("169 WAS ADDED TO THIS LIST");
+					//System.out.println("169 WAS ADDED TO THIS LIST");
 				}
 				if(neighbor.nodeIndex == game.getPacmanCurrentNodeIndex()){
 					//System.out.println(n.neighbourhood);
@@ -218,70 +221,16 @@ public class IdentifyClusters implements IAction, IBinaryNode {
     @Override
     public IAction makeDecision(Game game) {
     	int minDistance = 10000;
-    	int bestTarget = -1;
+    	int bestTarget = 0;
     	int[] shortestPath = new int[1];
     	int pacmanIndex = game.getPacmanCurrentNodeIndex();
     	MOVE lastMove = game.getPacmanLastMoveMade();
     	for(ArrayList<Node> cluster: _clusters){
     		for(Node n: cluster){
     			if(_leafList.get(n.nodeIndex) != null){
-    				int[] path = game.getShortestPath(pacmanIndex, n.nodeIndex, lastMove);
-    				
-    				//Checks if the path;
-    				if(path.length > 3){
-	    				boolean ghostAlongPath = false;
-	    				for(int j = 0; j < path.length; j++){
-	    					for(GHOST ghost : GHOST.values()){
-	    						if(game.getGhostCurrentNodeIndex(ghost) == path[j]){
-	    							ghostAlongPath = true;
-	    						}
-	    					}
-	    				}
-	    				if(ghostAlongPath == true){
-	    					
-	    					continue;
-	    				}
-	    				/*boolean isSafe = true;
-	    				for(int j = 0; j < path.length; j++){
-	    					for(GHOST ghost : GHOST.values()){
-	    						int[] gPath = game.getShortestPath(game.getGhostCurrentNodeIndex(ghost), 
-	    								path[j], game.getGhostLastMoveMade(ghost));
-	    						if(gPath.length < j){
-	    							isSafe = false;
-	    							break;
-	    						}
-	    					}
-	    				}
-	    				if(isSafe == false){
-	    					bestTarget = pacmanIndex;
-	    					shortestPath = game.getShortestPath(pacmanIndex, pacmanIndex);
-	    					continue;
-	    				}*/
-    				}else{
-    					Boolean bad = false;
-    					int checkedIndex = (cluster.size() > 6)?6:cluster.size()-1;
-    					for(int k = 0; k < checkedIndex; k++){
-	    					int[] tmpPath = game.getShortestPath(pacmanIndex, cluster.get(k).nodeIndex);
-	    					for(GHOST ghost : GHOST.values()){
-	    						if(game.getGhostLairTime(ghost) == 0 && game.isGhostEdible(ghost) == false){
-		    						int[] ghostPath = game.getShortestPath(game.getGhostCurrentNodeIndex(ghost), 
-		    								cluster.get(k).nodeIndex, game.getGhostLastMoveMade(ghost));
-		    						GameView.addPoints(game, Color.MAGENTA, ghostPath);
-		    						if(ghostPath.length < tmpPath.length){
-		    							bad = true;
-		    						}
-	    						}else{
-	    							System.out.println("WTF");
-	    						}
-	    					}
-    					}
-    					if(bad){
-    						continue;
-    					}
-    				}
-    				
-    				aStarCount++;
-    				if(path.length < minDistance){
+    				int[] path = _aStar.computePathsAStar(pacmanIndex, n.nodeIndex, lastMove, game);
+    				System.out.println("length = "+path.length);
+    				if(path.length+10 < minDistance){
     					if(path.length>0){
     						minDistance = path.length;
         					shortestPath = path;
@@ -291,10 +240,74 @@ public class IdentifyClusters implements IAction, IBinaryNode {
     			}
     		}
     	}
-    	if(bestTarget == -1){
-    		System.out.println("NO NODE CHOSEN");
-    	}
-		GameView.addPoints(game, Color.WHITE, shortestPath);
+    				//Checks if the path;
+    				//if(path.length > 3){
+//    				boolean ghostAlongPath = false;
+//    				for(int j = 0; j < path.length; j++){
+//    					for(GHOST ghost : GHOST.values()){
+//    						if(game.getGhostCurrentNodeIndex(ghost) == path[j]){
+//    							ghostAlongPath = true;
+//    						}
+//    					}
+//    				}
+//	    				if(ghostAlongPath == true){
+//	    					
+//	    					continue;
+//	    				}
+//	    				/*boolean isSafe = true;
+//	    				for(int j = 0; j < path.length; j++){
+//	    					for(GHOST ghost : GHOST.values()){
+//	    						int[] gPath = game.getShortestPath(game.getGhostCurrentNodeIndex(ghost), 
+//	    								path[j], game.getGhostLastMoveMade(ghost));
+//	    						if(gPath.length < j){
+//	    							isSafe = false;
+//	    							break;
+//	    						}
+//	    					}
+//	    				}
+//	    				if(isSafe == false){
+//	    					bestTarget = pacmanIndex;
+//	    					shortestPath = game.getShortestPath(pacmanIndex, pacmanIndex);
+//	    					continue;
+//	    				}*/
+//    				}else{
+//    					Boolean bad = false;
+//    					int checkedIndex = (cluster.size() > 6)?6:cluster.size()-1;
+//    					for(int k = 0; k < checkedIndex; k++){
+//	    					int[] tmpPath = game.getShortestPath(pacmanIndex, cluster.get(k).nodeIndex);
+//	    					for(GHOST ghost : GHOST.values()){
+//	    						if(game.getGhostLairTime(ghost) == 0 && game.isGhostEdible(ghost) == false){
+//		    						int[] ghostPath = game.getShortestPath(game.getGhostCurrentNodeIndex(ghost), 
+//		    								cluster.get(k).nodeIndex, game.getGhostLastMoveMade(ghost));
+//		    						GameView.addPoints(game, Color.MAGENTA, ghostPath);
+//		    						if(ghostPath.length < tmpPath.length){
+//		    							bad = true;
+//		    						}
+//	    						}else{
+//	    							//System.out.println("WTF");
+//	    						}
+//	    					}
+//    					}
+//    					if(bad){
+//    						continue;
+//    					}
+//    				}
+//    				
+//    				aStarCount++;
+//    				if(path.length < minDistance){
+//    					if(path.length>0){
+//    						minDistance = path.length;
+//        					shortestPath = path;
+//        					bestTarget = n.nodeIndex;
+//    					}
+//    				}
+//    			}
+//    		}
+//    	}
+//    	if(bestTarget == -1){
+//    		//System.out.println("NO NODE CHOSEN");
+//    	}
+		GameView.addPoints(game, Color.WHITE, bestTarget);
 		//System.out.println("target: "+bestTarget);
 		//System.out.println("distance: "+minDistance);
     	this._move = game.getNextMoveTowardsTarget(pacmanIndex, bestTarget, Constants.DM.PATH);
@@ -316,8 +329,15 @@ public class IdentifyClusters implements IAction, IBinaryNode {
     	return MOVE.NEUTRAL;
     }
 
-    @Override
-    public MOVE getMove() {
-        return this._move;
-    }
+	@Override
+	public MOVE getMove(Game game) {
+		// TODO Auto-generated method stub
+		return this._move;
+	}
+
+	@Override
+	public MOVE getMove() {
+		// TODO Auto-generated method stub
+		return this._move;
+	}
 }
