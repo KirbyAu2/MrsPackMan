@@ -1,19 +1,27 @@
 package edu.ucsc.gameAI;
 
+import java.awt.Color;
+
+import pacman.game.Constants.DM;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
+import pacman.game.GameView;
 import pacman.game.internal.AStar;
+import pacman.game.internal.Node;
 import edu.ucsc.gameAI.conditions.GhostInRegion;
 import edu.ucsc.gameAI.decisionTrees.binary.IBinaryNode;
 
 public class Collect implements IAction, IBinaryNode {
 	private MOVE _move;
-	private AStar _aStar;
+	private PacAStar _aStar;
+	private static int count = 0;
+	private boolean _initd = false;
+	private Boolean flipped = false;
+	private GetMoveAvoidingGhosts _search = new GetMoveAvoidingGhosts();
 		
-	public Collect(Game game){
-		this._aStar = new AStar();
-		this._aStar.createGraph(game.getCurrentMaze().graph);
+	public Collect(){
+
 	}
 	
     public void doAction() {
@@ -28,90 +36,30 @@ public class Collect implements IAction, IBinaryNode {
     public IAction makeDecision(Game game) {
     	int startIndex = game.getPacmanCurrentNodeIndex();
     	int closestPill = this.findNearestPowerPill(game, startIndex);
-    	if (closestPill < 0){
+    	/*if (closestPill < 0){
     		closestPill = (int)Math.floor(Math.random()*100);
-    	}
-    	int x = game.getNodeXCood(closestPill);
-		int y = game.getNodeYCood(closestPill);
+    	}*/
+        Node[] nodes = game.getCurrentMaze().graph;
+
 		boolean ghostNearby = this.isGhostNearby(game, startIndex);
-		if (ghostNearby){
-			this._move = this.evade(game);
-			return this;
-		}
+        //GameView.addPoints(game, Color.CYAN, closestPill);
     	MOVE lastMoveMade = game.getPacmanLastMoveMade();
-    	int[] path = this._aStar.computePathsAStar(startIndex, closestPill, lastMoveMade, game);
+    	int[] path = game.getShortestPath(startIndex, closestPill);
     	this._move = MOVE.NEUTRAL;
-    	if(path.length > 1){
-    		this._move = this.getMoveFromPoints(game, path[0], path[1]);
+    	if(path.length > 10){
+    		this._move = _search.getEvadingMove(closestPill, game);
+    	}else if(!ghostNearby){
+    		int abovePill = getPowerPillNeighbor(closestPill, MOVE.UP, game);
+    		int belowPill = getPowerPillNeighbor(closestPill, MOVE.DOWN, game);
+    		int target = game.getShortestPathDistance(startIndex, abovePill) > 
+    					 game.getShortestPathDistance(startIndex, belowPill) ? belowPill : abovePill;
+    		this._move = _search.getEvadingMove(target, game);
+    	}else{
+    		this._move = _search.getEvadingMove(closestPill, game);
     	}
         return this;
     }
     
-    private MOVE evade(Game game) {
-    	int pacManIndex = game.getPacmanCurrentNodeIndex();
-    	MOVE move;
-		GHOST nearestGhost = this.findNearestGhost(game, pacManIndex);
-		MOVE ghostDirection = game.getGhostLastMoveMade(nearestGhost);
-		MOVE pacmanDirection = game.getPacmanLastMoveMade();
-		MOVE direction = this.getMoveFromPoints(game, pacManIndex, game.getGhostCurrentNodeIndex(nearestGhost));
-		/*if(direction==MOVE.DOWN  && ghostDirection==MOVE.UP){
-			return MOVE.UP;
-		}else if(direction==MOVE.UP  && ghostDirection==MOVE.DOWN){
-			return MOVE.DOWN;
-		}else if(direction==MOVE.RIGHT  && ghostDirection==MOVE.LEFT){
-			return MOVE.LEFT;
-		}else if(direction==MOVE.LEFT  && ghostDirection==MOVE.RIGHT){
-			return MOVE.RIGHT;
-		}*/
-		int ghostIndex = game.getGhostCurrentNodeIndex(nearestGhost);
-		int ghostYCord = game.getNodeYCood(ghostIndex);
-		int ghostXCord = game.getNodeXCood(ghostIndex);
-		int pacmanYCord = game.getNodeYCood(pacManIndex);
-		int pacmanXCord = game.getNodeXCood(pacManIndex);
-		if(ghostYCord < pacmanYCord){
-			if((ghostDirection == MOVE.DOWN || ghostDirection == MOVE.RIGHT) && 
-					(pacmanDirection == MOVE.UP || pacmanDirection == MOVE.LEFT) &&
-					(ghostXCord <= pacmanXCord)){
-				System.out.println("Evaded");
-				return MOVE.RIGHT;
-				//return getEvadingMove(game, pacManIndex, ghostIndex, ghostDirection);
-			}else if((ghostDirection == MOVE.DOWN || ghostDirection == MOVE.LEFT) && 
-					(pacmanDirection == MOVE.UP || pacmanDirection == MOVE.RIGHT) &&
-					(ghostXCord >= pacmanXCord)){
-				System.out.println("Evaded");
-				return MOVE.LEFT;
-				//return getEvadingMove(game, pacManIndex, ghostIndex, ghostDirection);
-			}
-		}else{
-			if((ghostDirection == MOVE.UP || ghostDirection == MOVE.RIGHT) && 
-					(pacmanDirection == MOVE.DOWN || pacmanDirection == MOVE.LEFT) &&
-					(ghostXCord <= pacmanXCord)){
-				System.out.println("Evaded");
-				return MOVE.DOWN;
-				//return getEvadingMove(game, pacManIndex, ghostIndex, ghostDirection);
-			}else if((ghostDirection == MOVE.UP || ghostDirection == MOVE.LEFT) && 
-					(pacmanDirection == MOVE.DOWN || pacmanDirection == MOVE.RIGHT) &&
-					(ghostXCord >= pacmanXCord)){
-				System.out.println("Evaded");
-				//return getEvadingMove(game, pacManIndex, ghostIndex, ghostDirection);
-				return MOVE.UP;
-			}
-		}
-		
-		return MOVE.NEUTRAL;
-	}
-    
-    private MOVE getEvadingMove(Game game, int pacMan, int ghost, MOVE lastGhostMoveMade){
-    	System.out.println("Pac: "+pacMan+"ghost: "+ghost);
-    	int[] path = this._aStar.computePathsAStar(ghost, pacMan, game);
-    	//get the second to last point in the path and go the opposite direction
-    	int index = 0;
-    	if (path.length > 1){
-    		index = path.length-1;
-    	}
-    	int closestPoint = path[index];
-    	return getMoveFromPoints(game, closestPoint, ghost);
-    }
 
 	private boolean isGhostNearby(Game game, int pacManIndex) {
     	int x = game.getNodeXCood(pacManIndex);
@@ -123,10 +71,11 @@ public class Collect implements IAction, IBinaryNode {
 
 	private int findNearestPowerPill(Game game, int pacManIndex) {
     	int[] pillIndices = game.getActivePowerPillsIndices();
+    	MOVE lastMove = game.getPacmanLastMoveMade();
     	int shortest = 10000;
     	int nearestIndex = -1;
     	for (int index : pillIndices){
-    		int[] path = _aStar.computePathsAStar(pacManIndex, index, game);
+    		int[] path = game.getShortestPath(pacManIndex, index);
     		if(path.length < shortest){
     			shortest = path.length;
     			nearestIndex = index;
@@ -135,12 +84,32 @@ public class Collect implements IAction, IBinaryNode {
     	return nearestIndex;
 	}
 	
+	private int getPowerPillNeighbor(int pillIndex, MOVE move, Game game){
+		 int spot = 4;
+         Node[] nodes = game.getCurrentMaze().graph;
+         Node n = nodes[pillIndex];
+         while(spot > 0){
+             spot--;
+             for(int neighbor : n.neighbourhood.values()){
+                 if(n.neighbourhood.get(move) != null){
+	                    if(n.neighbourhood.get(move) == neighbor){
+	                        n = nodes[neighbor];
+	                        //spot--;
+	                        continue;
+	                    }
+                 }
+             }
+         }
+         return n.nodeIndex;
+	}
+	
 	private GHOST findNearestGhost(Game game, int pacManIndex) {
     	int shortest = 10000;
     	GHOST nearestGhost = null;
+    	MOVE lastMove = game.getPacmanLastMoveMade();
     	for (GHOST g : GHOST.values()){
     		int index = game.getGhostCurrentNodeIndex(g);
-    		int[] path = _aStar.computePathsAStar(pacManIndex, index, game);
+    		int[] path = game.getShortestPath(pacManIndex, index, lastMove);
     		if(path.length < shortest){
     			shortest = path.length;
     			nearestGhost = g;
@@ -150,19 +119,26 @@ public class Collect implements IAction, IBinaryNode {
 	}
 
 	private MOVE getMoveFromPoints(Game game, int index1, int index2){
-    	int	deltaX = game.getNodeXCood(index2)-game.getNodeXCood(index1);
+		//GameView.addPoints(game, Color.WHITE, index1);
+		//GameView.addPoints(game, Color.WHITE, index2);
+		return game.getNextMoveTowardsTarget(index1, index2, DM.PATH);
+    	/*int	deltaX = game.getNodeXCood(index2)-game.getNodeXCood(index1);
     	int	deltaY = game.getNodeYCood(index2)-game.getNodeYCood(index1);
     	if(deltaX < 0) return MOVE.LEFT;
     	if(deltaX > 0) return MOVE.RIGHT;
     	if(deltaY < 0) return MOVE.UP;
-    	if(deltaY > 0) return MOVE.DOWN;
-    	return MOVE.NEUTRAL;
+    	if(deltaY > 0) return MOVE.DOWN;*/
+    	//return MOVE.NEUTRAL;
     }
     @Override
     public MOVE getMove() {
         return this._move;
     }
     public MOVE getMove(Game game) {
+    	if(_initd == false){
+    		_initd = true;
+    	}
+        makeDecision(game);
         return this._move;
     }
 }

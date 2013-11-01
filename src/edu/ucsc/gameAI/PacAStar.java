@@ -1,23 +1,22 @@
-package pacman.game.internal;
+package edu.ucsc.gameAI;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
+import java.util.Hashtable;
 import java.util.PriorityQueue;
 
-import pacman.game.Constants.DM;
+import pacman.game.Constants.GHOST;
 import pacman.game.Game;
 import pacman.game.Constants.MOVE;
+import pacman.game.GameView;
+import pacman.game.internal.Node;
 
-/*
- * This class is used to compute the shortest path for the ghosts: as these may not reverse, one cannot use 
- * a simple look-up table. Instead, we use the pre-computed shortest path distances as an admissable
- * heuristic. Although AStar needs to be run every time a path is to be found, it is very quick and does
- * not expand too many nodes beyond those on the optimal path.
- */
-public class AStar
-{
-	private N[] graph;
+public class PacAStar{
+private N[] graph;
+private Hashtable<Integer, Boolean> _closeNodes = new Hashtable<Integer, Boolean>();
+private int _count = 0;
 	
 	public void createGraph(Node[] nodes)
 	{
@@ -44,6 +43,16 @@ public class AStar
 		N start=graph[s];
 		N target=graph[t];
 		
+		_count = 0;
+		int ghostDistance = 10;
+		//fills _closeNodes with all the nodes close to the ghosts
+		for(GHOST type: GHOST.values()){
+        	int ghostIndex = game.getGhostCurrentNodeIndex(type);
+			Node ghostNode = game.getCurrentMaze().graph[ghostIndex];
+			getPointsNearGhost(ghostNode, _closeNodes,  10, game);
+        }
+		//System.out.println(_count);
+		
         PriorityQueue<N> open = new PriorityQueue<N>();
         ArrayList<N> closed = new ArrayList<N>();
 
@@ -66,21 +75,28 @@ public class AStar
             {
             	if(next.move!=currentNode.reached.opposite())
             	{
+            		/*if(isNodeClostToGhosts(next.node.index, currentNode.g+next.cost, ghostDistance, game)){
+            			next.cost += 100;
+            			System.out.println("NODE IS CLOSE");
+            			GameView.addPoints(game, Color.DARK_GRAY, next.node.index);
+            			
+            		}*/
 	                double currentDistance = next.cost;
 	
 	                if (!open.contains(next.node) && !closed.contains(next.node))
 	                {
-	                    next.node.g = currentDistance + currentNode.g;
-	                    next.node.h = game.getDistance(next.node.index, target.index, DM.PATH);
+	                    next.node.g = currentDistance + currentNode.g + currentNode.dangerCost;
+	                    System.out.println(next.node.g);
+	                    next.node.h = game.getShortestPathDistance(next.node.index, target.index)+currentNode.dangerCost;
 	                    next.node.parent = currentNode;
 	                    
 	                    next.node.reached=next.move;
 	
 	                    open.add(next.node);
 	                }
-	                else if (currentDistance + currentNode.g < next.node.g)
+	                else if (currentDistance + currentNode.g + currentNode.dangerCost < next.node.g)
 	                {
-	                    next.node.g = currentDistance + currentNode.g;
+	                    next.node.g = currentDistance + currentNode.g + currentNode.dangerCost;
 	                    next.node.parent = currentNode;
 	                    
 	                    next.node.reached=next.move;
@@ -96,25 +112,62 @@ public class AStar
 	            }
             }
         }
-
-        return extractPath(target);
+        _closeNodes.clear();
+        return extractPath(target, game);
     }
 	
 	public synchronized int[] computePathsAStar(int s, int t, Game game)
     {	
 		return computePathsAStar(s, t, MOVE.NEUTRAL, game);
     }
+	
+	private boolean isNodeClostToGhosts(int nodeIndex, double distanceFromPacMan, int ghostDistance, Game game){
+		for(GHOST type: GHOST.values()){
+        	int ghostIndex = game.getGhostCurrentNodeIndex(type);
+			//Node ghostNode = game.getCurrentMaze().graph[ghostIndex];
+        	if(_closeNodes.get(nodeIndex) != null && distanceFromPacMan <= ghostDistance && !game.isGhostEdible(type)){
+        		System.out.println("RAN INTO A FUCKING GHOST");
+        		return true;
+        	}
+        }
+		return false;
+	}
+	
+	private void getPointsNearGhost(Node n, Hashtable<Integer, Boolean> closeNodes, int maxDist, Game game){
+		if(closeNodes.get(n.nodeIndex) == null && maxDist != 0){
+			closeNodes.put(n.nodeIndex, true);
+			graph[n.nodeIndex].dangerCost += 1000;
+			GameView.addPoints(game, Color.RED, graph[n.nodeIndex].index);
+			graph[931].dangerCost += 1000;
+			GameView.addPoints(game, Color.RED, 931);
+			_count++;
+		}
+		
+		for(int neighborIndex: n.neighbourhood.values()){
+			Node neighbor = game.getCurrentMaze().graph[neighborIndex];
+			if(closeNodes.get(neighbor.nodeIndex) == null && maxDist != 0){
+				getPointsNearGhost(neighbor, closeNodes, maxDist-1, game);
+			}
+		}
+		//System.out.println(' ');
+	}
 
-    private synchronized int[] extractPath(N target)
+    private synchronized int[] extractPath(N target, Game game)
     {
     	ArrayList<Integer> route = new ArrayList<Integer>();
         N current = target;
         route.add(current.index);
-
-        while (current.parent != null)
+        
+        while (current.parent != null && !route.contains(current.parent.index))
         {
-            route.add(current.parent.index);
-            current = current.parent;
+        	//System.out.print(current.parent.index+", ");
+        	if(!route.contains(current.parent.index)){
+        		route.add(current.parent.index);
+            	current = current.parent;
+        	}else{
+        		//System.out.println(current.parent.index);
+            	GameView.addPoints(game, Color.GREEN, current.parent.index);
+        	}
         }
         
         Collections.reverse(route);
@@ -123,7 +176,7 @@ public class AStar
         
         for(int i=0;i<routeArray.length;i++)
         	routeArray[i]=route.get(i);
-        
+        //GameView.addPoints(game, Color.BLUE, routeArray);
         return routeArray;
     }
     
@@ -142,6 +195,7 @@ public class AStar
 class N implements Comparable<N>
 {
     public N parent;
+    public int dangerCost;
     public double g, h;
     public boolean visited = false;
     public ArrayList<E> adj;
@@ -194,3 +248,4 @@ class E
 		this.cost=cost;
 	}
 }
+

@@ -1413,13 +1413,15 @@ public final class Game
 		for(Entry<MOVE,Integer> entry : currentMaze.graph[fromNodeIndex].neighbourhood.entrySet())
 		{
 			double distance=getDistance(entry.getValue(),toNodeIndex,distanceMeasure);
-								
+			
+			//System.out.print("node: "+entry+", index: "+fromNodeIndex+" ");
 			if(distance<minDistance)
 			{
 				minDistance=distance;
 				move=entry.getKey();	
 			}
 		}
+		//System.out.println(' ');
 		
 		return move;
 	}
