@@ -1,6 +1,7 @@
 package edu.ucsc.gameAI.conditions;
 
 import edu.ucsc.gameAI.ICondition;
+import pacman.game.Constants.DM;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.internal.AStar;
@@ -24,11 +25,15 @@ public class PacmanIsDangerous implements ICondition {
         // AKA compute if path is safe
         int startIndex = game.getPacmanCurrentNodeIndex();
         MOVE lastMoveMade = game.getPacmanLastMoveMade();
-        this._target = game.getGhostCurrentNodeIndex(_ghost);
-        double edibleTime = game.getGhostEdibleTime(_ghost);
-        int interceptPath[] = game.getShortestPath(startIndex, this._target,
+        int target = game.getGhostCurrentNodeIndex(this._ghost);
+        double edibleTime = game.getGhostEdibleTime(this._ghost);
+        System.out.println("startIndex is: "+startIndex);
+        System.out.println("Target is: "+target);
+        System.out.println("LastMove is: "+lastMoveMade);
+        int interceptPath[];
+        interceptPath = game.getShortestPath(target, startIndex,
                 lastMoveMade);
-        int curLevelSpeed = game.getCurrentLevel();
+        //double interceptPath = game.getDistance(startIndex, target, DM.MANHATTAN);
         double ediblePathTime = (edibleTime * 2.1) / 8;
         unsafePath = (ediblePathTime > interceptPath.length/2);
 
@@ -44,6 +49,7 @@ public class PacmanIsDangerous implements ICondition {
         if(shortestDist < unsafePowerPillDistance)
             pacmanNearPowerPill = true;
         
-        return (unsafePath || pacmanNearPowerPill);
+        //return (unsafePath || pacmanNearPowerPill);
+        return unsafePath;
     }
 }

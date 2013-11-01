@@ -78,7 +78,7 @@ public class EvadePacmanMove implements IAction, IBinaryNode {
         // Find closest ghost to pacman
         int pacmanIndex = game.getPacmanCurrentNodeIndex();
         int ourIndex = game.getGhostCurrentNodeIndex(_ghost);
-        int distToPacmanForUs[] = game.getShortestPath(pacmanIndex, ourIndex,
+        int distToPacmanForUs[] = game.getShortestPath(ourIndex,pacmanIndex, 
                 game.getPacmanLastMoveMade());
         int dist = distToPacmanForUs.length;
         int rank = 0;

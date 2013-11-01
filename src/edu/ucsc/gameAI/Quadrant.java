@@ -1,6 +1,5 @@
 package edu.ucsc.gameAI;
 
-import edu.ucsc.gameAI.conditions.GhostInRegion;
 import edu.ucsc.gameAI.conditions.PacmanInRegion;
 import pacman.game.Constants.GHOST;
 import pacman.game.Game;
