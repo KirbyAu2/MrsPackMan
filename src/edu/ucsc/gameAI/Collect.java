@@ -1,20 +1,32 @@
 package edu.ucsc.gameAI;
 
+import java.awt.Color;
+
 import pacman.game.Constants.DM;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
+import pacman.game.GameView;
 import pacman.game.internal.AStar;
+import pacman.game.internal.Node;
 import edu.ucsc.gameAI.conditions.GhostInRegion;
 import edu.ucsc.gameAI.decisionTrees.binary.IBinaryNode;
 
 public class Collect implements IAction, IBinaryNode {
 	private MOVE _move;
 	private PacAStar _aStar;
+	private static int count = 0;
+	private boolean _initd = false;
 		
-	public Collect(Game game){
+	public Collect(){
+
+	}
+	
+	public void initAStar(Game game){
 		this._aStar = new PacAStar();
 		this._aStar.createGraph(game.getCurrentMaze().graph);
+		count++;
+		System.out.println(count);
 	}
 	
     public void doAction() {
@@ -40,10 +52,15 @@ public class Collect implements IAction, IBinaryNode {
 			return this;
 		}*/
     	MOVE lastMoveMade = game.getPacmanLastMoveMade();
-    	int[] path = this._aStar.computePathsAStar(startIndex, closestPill, lastMoveMade, game);
+    	//int[] path = this._aStar.computePathsAStar(startIndex, closestPill, lastMoveMade, game);
+    	int[] path = game.getShortestPath(startIndex, closestPill);
     	this._move = MOVE.NEUTRAL;
-    	if(path.length > 1){
-    		this._move = this.getMoveFromPoints(game, path[0], path[1]);
+    	if(path.length > 2){
+    		int y1 = game.getNodeYCood(path[1]);
+    		int y2 = game.getNodeYCood(path[2]);
+    		//System.out.println("Y1: "+y1+ ", Y2"+y2);
+    		GameView.addPoints(game, Color.MAGENTA, path);
+    		this._move = this.getMoveFromPoints(game, path[0], path[2]);
     	}
         return this;
     }
@@ -127,7 +144,8 @@ public class Collect implements IAction, IBinaryNode {
     	int shortest = 10000;
     	int nearestIndex = -1;
     	for (int index : pillIndices){
-    		int[] path = _aStar.computePathsAStar(pacManIndex, index, game);
+    		int[] path = _aStar.computePathsAStar(index, pacManIndex, game);
+        	//int[] path = game.getShortestPath(pacManIndex, index);
     		if(path.length < shortest){
     			shortest = path.length;
     			nearestIndex = index;
@@ -141,6 +159,7 @@ public class Collect implements IAction, IBinaryNode {
     	GHOST nearestGhost = null;
     	for (GHOST g : GHOST.values()){
     		int index = game.getGhostCurrentNodeIndex(g);
+        	//int[] path = game.getShortestPath(startIndex, closestPill);
     		int[] path = _aStar.computePathsAStar(pacManIndex, index, game);
     		if(path.length < shortest){
     			shortest = path.length;
@@ -151,6 +170,8 @@ public class Collect implements IAction, IBinaryNode {
 	}
 
 	private MOVE getMoveFromPoints(Game game, int index1, int index2){
+		GameView.addPoints(game, Color.WHITE, index1);
+		GameView.addPoints(game, Color.WHITE, index2);
 		return game.getNextMoveTowardsTarget(index1, index2, DM.PATH);
     	/*int	deltaX = game.getNodeXCood(index2)-game.getNodeXCood(index1);
     	int	deltaY = game.getNodeYCood(index2)-game.getNodeYCood(index1);
@@ -165,6 +186,11 @@ public class Collect implements IAction, IBinaryNode {
         return this._move;
     }
     public MOVE getMove(Game game) {
+    	if(_initd == false){
+    		_initd = true;
+    		initAStar(game);
+    	}
+    	makeDecision(game);
         return this._move;
     }
 }

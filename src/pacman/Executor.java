@@ -61,9 +61,10 @@ public class Executor
 		
 		//run multiple games in batch mode - good for testing.
 		//int numTrials=10000;
-		int numTrials=6;
-		//exec.runExperiment(new MyPacMan(),new Legacy2TheReckoning(),numTrials);
-		//exec.runExperiment(new StarterPacMan() , new MyGhosts(), numTrials);
+		int numTrials=100;
+		//exec.runExperiment(new StarterPacMan(),new Legacy2TheReckoning(),numTrials);
+
+		exec.runExperiment(new MyPacMan() , new Legacy2TheReckoning(), numTrials);
 		
 		/*
 		//run a game in synchronous mode: game waits until controllers respond.
@@ -121,6 +122,7 @@ public class Executor
     public void runExperiment(Controller<MOVE> pacManController,Controller<EnumMap<GHOST,MOVE>> ghostController,int trials)
     {
     	double avgScore=0;
+    	int count = 0;
     	
     	Random rnd=new Random(0);
 		Game game;
@@ -134,12 +136,14 @@ public class Executor
 		        game.advanceGame(pacManController.getMove(game.copy(),System.currentTimeMillis()+DELAY),
 		        		ghostController.getMove(game.copy(),System.currentTimeMillis()+DELAY));
 			}
-			
-			avgScore+=game.getScore();
+			if(game.getScore()!=260){
+				avgScore+=game.getScore();
+				count++;
+			}
 			System.out.println(i+"\t"+game.getScore());
 		}
 		
-		System.out.println(avgScore/trials);
+		System.out.println(avgScore/count);
     }
     
 	/**

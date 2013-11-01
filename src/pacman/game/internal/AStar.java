@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.PriorityQueue;
 
+import pacman.game.Constants.DM;
 import pacman.game.Game;
 import pacman.game.Constants.MOVE;
 
@@ -70,7 +71,7 @@ public class AStar
 	                if (!open.contains(next.node) && !closed.contains(next.node))
 	                {
 	                    next.node.g = currentDistance + currentNode.g;
-	                    next.node.h = game.getShortestPathDistance(next.node.index, target.index);
+	                    next.node.h = game.getDistance(next.node.index, target.index, DM.PATH);
 	                    next.node.parent = currentNode;
 	                    
 	                    next.node.reached=next.move;
