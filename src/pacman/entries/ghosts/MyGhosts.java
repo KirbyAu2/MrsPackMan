@@ -85,24 +85,19 @@ public class MyGhosts extends Controller<EnumMap<GHOST, MOVE>> {
 
         for (GHOST ghost : GHOST.values()) // for each ghost
         {
-            /*
-             * BinaryDecision edibleBinaryDecision = new BinaryDecision();
-             * edibleBinaryDecision.setCondition(new IsEdible(ghost));
-             * edibleBinaryDecision.setTrueBranch(new GoLeftAction());
-             * edibleBinaryDecision.setFalseBranch(new GoRightAction());
-             */
             // check if fsm is built for each ghost
             // if not, then built an fsm for the ghost
-            if (fsmBlinky == null) {
+            boolean newLevel = game.getCurrentLevelTime()==0;
+            if (fsmBlinky == null || newLevel) {
                 buildFSMBlinky(game, ghost);
             }
-            if (fsmPinky == null) {
+            if (fsmPinky == null || newLevel) {
                 buildFSMPinky(game, ghost);
             }
-            if (fsmInky == null) {
+            if (fsmInky == null || newLevel) {
                 buildFSMInky(game, ghost);
             }
-            if (fsmSue == null) {
+            if (fsmSue == null || newLevel) {
                 buildFSMSue(game, ghost);
             }
             /*
@@ -137,14 +132,7 @@ public class MyGhosts extends Controller<EnumMap<GHOST, MOVE>> {
                 switch ((GHOST) ghost) {
                 case BLINKY:
                     currentGhost = 0;
-                    // System.out.println("find move for Blinky");
-                   /* if (fsmBlinky.getCurrentState() == pursueStateBlinky) {
-                        System.out.println("Blinky in pursue mode");
-                    } else if (fsmBlinky.getCurrentState() == evadeStateBlinky) {
-                        System.out.println("Blinky in evade mode");
-                    } else {
-                        System.out.println("Blinky in neither mode");
-                    }*/
+
                     pursueStateBlinky.setAction(new GhostMoveTowardsNode(game,
                             ghost, game.getPacmanCurrentNodeIndex()));
                     // // Transition to evade state if powerpill was eaten
@@ -157,14 +145,7 @@ public class MyGhosts extends Controller<EnumMap<GHOST, MOVE>> {
                     break;
                 case PINKY:
                     currentGhost = 1;
-                    // System.out.println("find move for Pinky");
-                    /* if (fsmPinky.getCurrentState() == pursueStatePinky) {
-                        System.out.println("Pinky in pursue mode");
-                    } else if (fsmPinky.getCurrentState() == evadeStatePinky) {
-                        System.out.println("Pinky in evade mode");
-                    } else {
-                        System.out.println("Pinky in neither mode");
-                    }*/
+                    
                     pursueStatePinky.setAction(new GhostMoveTowardsNode(game,
                             ghost, game.getPacmanCurrentNodeIndex()));
                     // // Transition to evade state if powerpill was eaten
@@ -175,14 +156,7 @@ public class MyGhosts extends Controller<EnumMap<GHOST, MOVE>> {
                     break;
                 case INKY:
                     currentGhost = 2;
-                    // System.out.println("find move for Inky");
-                    /* if (fsmInky.getCurrentState() == pursueStateInky) {
-                        System.out.println("Inky in pursue mode");
-                    } else if (fsmInky.getCurrentState() == evadeStateInky) {
-                        System.out.println("Inky in evade mode");
-                    } else {
-                        System.out.println("Inky in neither mode");
-                    }*/
+                   
                     pursueStateInky.setAction(new GhostMoveTowardsNode(game,
                             ghost, game.getPacmanCurrentNodeIndex()));
                     // // Transition to evade state if powerpill was eaten
@@ -193,14 +167,7 @@ public class MyGhosts extends Controller<EnumMap<GHOST, MOVE>> {
                     break;
                 case SUE:
                     currentGhost = 3;
-                    // System.out.println("find move for Sue");
-                    /*if (fsmSue.getCurrentState() == pursueStateSue) {
-                        System.out.println("Sue in pursue mode");
-                    } else if (fsmSue.getCurrentState() == evadeStateSue) {
-                        System.out.println("Sue in evade mode");
-                    } else {
-                        System.out.println("Sue in neither mode");
-                    }*/
+                    
                     pursueStateSue.setAction(new GhostMoveTowardsNode(game,
                             ghost, game.getPacmanCurrentNodeIndex()));
                     // // Transition to evade state if powerpill was eaten
@@ -209,21 +176,7 @@ public class MyGhosts extends Controller<EnumMap<GHOST, MOVE>> {
                     evadeStateSue.setAction(new EvadePacmanMove(game, ghost));
                     transPursuitSue.setCondition(new SafeToPursue(ghost));
                     fsms[currentGhost].update(game);
-                    /*
-                     * if (fsms[currentGhost].getCurrentState() ==
-                     * pursueStateSue) { System.out.println("ghost " +
-                     * currentGhost + " in pursue mode"); GhostMoveTowardsNode
-                     * ghostMove = new GhostMoveTowardsNode( game, ghost,
-                     * game.getPacmanCurrentNodeIndex()); myMoves.put(ghost,
-                     * fsms[currentGhost].getCurrentState()
-                     * .getAction().getMove()); } else if
-                     * (fsms[currentGhost].getCurrentState() == evadeState) {
-                     * System.out.println("ghost " + currentGhost +
-                     * " in evade mode"); EvadePacmanMove ghostMove = new
-                     * EvadePacmanMove(game, ghost); myMoves.put(ghost,
-                     * fsms[currentGhost].getCurrentState()
-                     * .getAction().getMove()); }
-                     */
+                    
                     break;
                 }
                 fsms[currentGhost].update(game);
@@ -259,17 +212,6 @@ public class MyGhosts extends Controller<EnumMap<GHOST, MOVE>> {
                      //ghostMove.makeDecision(game).getMove());
                      //System.out.println("in Evade State");
                 }
-                // myMoves.put(ghost,
-                // fsm.getCurrentState().getAction().getMove());
-                // fsm.getCurrentState().getAction().getMove();
-                // myMoves.put(ghost,
-                // fsm.getCurrentState().getAction().getMove());
-
-                // if (edibleBinaryDecision.makeDecision(game).getClass() ==
-                // GoLeftAction.class)
-                // myMoves.put(ghost,MOVE.LEFT);
-                // else
-                // myMoves.put(ghost,MOVE.RIGHT);
             }
         }
 
