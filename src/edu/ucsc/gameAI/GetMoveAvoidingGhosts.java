@@ -95,7 +95,7 @@ public class GetMoveAvoidingGhosts{
 					//GameView.addPoints(game, Color.CYAN, n.nodeIndex);
 				}else if(contains(game.getActivePowerPillsIndices(), n.nodeIndex)){
 					//cost-=100;
-					cost -= 10000;
+					//cost -= 10000;
 					//GameView.addPoints(game, Color.GREEN, n.nodeIndex);
 				}else{
 					//GameView.addPoints(game, Color.getHSBColor((float)(parentCost+cost)/3000, (float)0.5, (float)1.0), n.nodeIndex);

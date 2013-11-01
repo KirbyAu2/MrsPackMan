@@ -27,6 +27,7 @@ public class IdentifyClusters implements IAction, IBinaryNode {
 	private PacAStar _aStar;
 	private Boolean initd = false;
 	private EnumMap<MOVE, Integer> moveScores =  new EnumMap<MOVE, Integer>(MOVE.class);
+	private GetMoveAvoidingGhosts _search = new GetMoveAvoidingGhosts();
 	
 	public IdentifyClusters(){
 		//colorClusters(game);
@@ -44,7 +45,7 @@ public class IdentifyClusters implements IAction, IBinaryNode {
 				if(this._clusters.get(i).get(j) != null){
 					colored[j] = this._clusters.get(i).get(j).nodeIndex;
 					if(_leafList.get(colored[j]) != null){
-						System.out.println("color:" +colored[j]);
+						//System.out.println("color:" +colored[j]);
 						leaves[count++] = colored[j];
 					}
 				}
@@ -168,7 +169,7 @@ public class IdentifyClusters implements IAction, IBinaryNode {
 				_clusters.add(newCluster);
 			}
 		}
-		System.out.println("");
+		//System.out.println("");
 		//System.out.println(_clusters.get(0).size()+" "+_clusters.get(1).size());
 	}
 	
@@ -191,7 +192,7 @@ public class IdentifyClusters implements IAction, IBinaryNode {
 				if(neighbor.nodeIndex == game.getPacmanCurrentNodeIndex()){
 					//System.out.println(n.neighbourhood);
 					//System.out.println(n.nodeIndex);
-					System.out.println("CURRENT PACMAN INCLUDED IN OLD");
+					//System.out.println("CURRENT PACMAN INCLUDED IN OLD");
 					//return;
 				}
 				split(neighbor, newCluster, oldMcCluster, game);
@@ -219,13 +220,13 @@ public class IdentifyClusters implements IAction, IBinaryNode {
     	for(ArrayList<Node> cluster: _clusters){
     		for(Node n: cluster){
     			if(_leafList.get(n.nodeIndex) != null){
-    				int[] path = _aStar.computePathsAStar(pacmanIndex, n.nodeIndex, lastMove, game);
+    				int[] path = game.getShortestPath(pacmanIndex, n.nodeIndex);
     				//int[] path = game.getShortestPath(pacmanIndex, n.nodeIndex);
-    				System.out.println("length = "+path.length);
-    				GameView.addPoints(game, Color.CYAN, n.nodeIndex);
+    				//System.out.println("length = "+path.length);
+    				//GameView.addPoints(game, Color.CYAN, n.nodeIndex);
     				if(path.length < minDistance){
     					if(path.length>0){
-    	    				System.out.println("ADDED length = "+path.length);
+    	    				//System.out.println("ADDED length = "+path.length);
     						minDistance = path.length;
         					shortestPath = path;
         					bestTarget = n.nodeIndex;
@@ -235,39 +236,12 @@ public class IdentifyClusters implements IAction, IBinaryNode {
     		}
     	}
     				
-		this._move = MOVE.NEUTRAL;
-    	if(path.length > 1){
-    		this._move = game.getNextMoveTowardsTarget(path[0], path[1], Constants.DM.PATH);
-    	}
-		GameView.addPoints(game, Color.GREEN, path); 
-		GameView.addPoints(game, Color.WHITE, bestTarget);
+    	this._move = _search.getEvadingMove(bestTarget, game);
+   		//GameView.addPoints(game, Color.GREEN, shortestPath); 
+		//GameView.addPoints(game, Color.WHITE, bestTarget);
 
     	//System.out.println("Move : "+this._move+'\n');
         return this;
-    }
-    
-    private ArrayList<Node> getClosestCluster(Game game){
-    	int[] shortestPath = new int[1];
-    	int pacmanIndex = game.getPacmanCurrentNodeIndex();
-    	MOVE lastMove = game.getPacmanLastMoveMade();
-    	for(ArrayList<Node> cluster: _clusters){
-    		int minDistance = Integer.MAX_VALUE;
-			int bestNode = -1;
-    		for(Node n: cluster){
-    			if(_nodesTable.get(n.nodeIndex) != null){
-    				int distance = (int)game.getDistance(pacmanIndex, n.nodeIndex, DM.PATH);
-    				//int[] path = game.getShortestPath(pacmanIndex, n.nodeIndex);
-    				//System.out.println("length = "+path.length);
-    				//GameView.addPoints(game, Color.CYAN, n.nodeIndex);
-    				if(distance < minDistance){
-						minDistance = distance;
-						bestNode = n.nodeIndex;
-    				}
-    			}
-    		}
-    		
-    		
-    	}
     }
     
     private MOVE getMoveFromPath(Game game, int[] path){
@@ -299,7 +273,6 @@ public class IdentifyClusters implements IAction, IBinaryNode {
         //if(game.wasPillEaten() || game.wasPowerPillEaten()){
             this.pillEaten(game);
         //}
-        System.out.println("PILL EATEN");
         this.makeDecision(game);
         return this._move;
     }

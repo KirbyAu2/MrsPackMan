@@ -38,7 +38,7 @@ public class EatGhosts implements IAction{
                     minPath = path.length;
                     targetIndex = game.getGhostCurrentNodeIndex(ghost);
                     //System.out.println("CHASING: " + ghost.name());
-                    GameView.addPoints(game, Color.GRAY, targetIndex);
+                    //GameView.addPoints(game, Color.GRAY, targetIndex);
                 }
             }
             //by default just in case

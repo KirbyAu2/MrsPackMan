@@ -9,6 +9,7 @@ import edu.ucsc.gameAI.IAction;
 import edu.ucsc.gameAI.IdentifyClusters;
 import edu.ucsc.gameAI.MoveTowardsNode;
 import edu.ucsc.gameAI.Wander;
+import edu.ucsc.gameAI.conditions.NoPowerPillsLeft;
 import edu.ucsc.gameAI.conditions.GhostNearPacman;
 import edu.ucsc.gameAI.conditions.NoMoreEdibleGhosts;
 import edu.ucsc.gameAI.conditions.PowerPillWasEaten;
@@ -36,6 +37,7 @@ public class MyPacMan extends Controller<MOVE>
 	private Wander _wander;
 	private StateMachine _stateMachine;
 	private State _seekClusters;
+	private State _collectPowerPills;
 	private State _run;
 	private State _eatGhosts;
 	
@@ -49,28 +51,42 @@ public class MyPacMan extends Controller<MOVE>
 	    _stateMachine = new StateMachine();
 	    _seekClusters = new State();
 	    _run = new State();
+	    _collectPowerPills = new State();
 	    _eatGhosts = new State();
 	    _ic = new IdentifyClusters();
 	    _collect = new Collect();
 	    _wander = new Wander();
 	    //Seek Clusters State
-	    _seekClusters.setAction(_wander);
+	    _seekClusters.setAction(_ic);
 	    /*Transition scTransition = new Transition();
 	    scTransition.setCondition(new GhostNearPacman(5));
 	    scTransition.setTargetState(_seekClusters);*/
         Transition powerPillTransition = new Transition();
         powerPillTransition.setTargetState(_eatGhosts);
         powerPillTransition.setCondition(new PowerPillWasEaten());
+        Transition seekPowerPillsTrans = new Transition();
+        seekPowerPillsTrans.setCondition(new NoPowerPillsLeft(false));
+        seekPowerPillsTrans.setTargetState(_collectPowerPills);
 	    Collection<ITransition> scTransCollection = new ArrayList<ITransition>();
 	    scTransCollection.add(powerPillTransition);
+	    scTransCollection.add(seekPowerPillsTrans);
 	    //scTransCollection.add(scTransition);
 	    _seekClusters.setTransitions(scTransCollection);
 	    
-	    _stateMachine.setCurrentState(_seekClusters);
+	    //Collect Power Pills
+	    _collectPowerPills.setAction(new Collect());
+	    Transition collectPowerPillsTransition = new Transition();
+	    collectPowerPillsTransition.setCondition(new PowerPillWasEaten());
+	    collectPowerPillsTransition.setTargetState(_eatGhosts);
+	    Transition goBackToSeeking = new Transition();
+	    goBackToSeeking.setCondition(new NoPowerPillsLeft(true));
+	    goBackToSeeking.setTargetState(_seekClusters);
+	    Collection<ITransition> collectTransCollection = new ArrayList<ITransition>();
+	    collectTransCollection.add(collectPowerPillsTransition);
+	    _collectPowerPills.setTransitions(collectTransCollection);
 	    
-	    //Run state
-	    
-	    
+	    _stateMachine.setCurrentState(_collectPowerPills);
+
 	    //Eat Ghosts
 	    _eatGhosts.setAction(new EatGhosts());
 	    Transition egTrans = new Transition();
