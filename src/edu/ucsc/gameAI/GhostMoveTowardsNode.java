@@ -70,19 +70,19 @@ public class GhostMoveTowardsNode implements IAction, IBinaryNode {
         int closeEnough = 70;
 
         // If the first or last ghost in the pack, move directly to PacMan
-        //if (_ghost.name() == "PINKY" || _ghost.name() == "BLINKY") {          
-            //this._move = game.getNextMoveTowardsTarget(curGhostIndex,
-            //        curPacmanIndex, lastGhostMove, DM.MANHATTAN);
+        if (_ghost.name() == "PINKY" || _ghost.name() == "BLINKY") {          
+            this._move = game.getNextMoveTowardsTarget(curGhostIndex,
+                    curPacmanIndex, lastGhostMove, DM.MANHATTAN);
              this._move = game.getNextMoveTowardsTarget(curGhostIndex,
              curPacmanIndex, lastGhostMove, DM.EUCLID);
-        //} else {
-        //    this._move = game.getNextMoveTowardsTarget(curGhostIndex,
-        //            curPacmanIndex, lastGhostMove, DM.MANHATTAN);
+        } else {
+            this._move = game.getNextMoveTowardsTarget(curGhostIndex,
+                    curPacmanIndex, lastGhostMove, DM.MANHATTAN);
             
-        //}
-            
-          /*  // Move the other ghost into a flanking position
-                // Get the current powerpills that pacman will go after
+        }
+        /*    
+            // Move the other ghost into a flanking position
+            // Get the current powerpills that pacman will go after
             int pillIndices[] = game.getActivePowerPillsIndices();
 
             if (pillIndices.length == 0) {// If no powerPills are left, just
@@ -102,7 +102,7 @@ public class GhostMoveTowardsNode implements IAction, IBinaryNode {
                         shortestInt = i;
                     }
                 }
-                System.out.println("Shortest Path is "+shortestPath);
+                //System.out.println("Shortest Path is "+shortestPath);
                 int ghostToPillDist = game.getShortestPathDistance(curGhostIndex, 
                         pillIndices[shortestInt], lastGhostMove);
                 int ghostToPacmanDist = game.getShortestPathDistance(curGhostIndex, 
@@ -118,7 +118,7 @@ public class GhostMoveTowardsNode implements IAction, IBinaryNode {
                 this._move = game.getNextMoveTowardsTarget(curGhostIndex,
                         pillIndices[shortestInt], DM.EUCLID); 
             }
-        }*/
+        //}*/
         return this._move;
     }
 }

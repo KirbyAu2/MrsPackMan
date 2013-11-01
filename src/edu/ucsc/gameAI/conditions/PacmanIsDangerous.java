@@ -27,9 +27,9 @@ public class PacmanIsDangerous implements ICondition {
         MOVE lastMoveMade = game.getPacmanLastMoveMade();
         int target = game.getGhostCurrentNodeIndex(this._ghost);
         double edibleTime = game.getGhostEdibleTime(this._ghost);
-        System.out.println("startIndex is: "+startIndex);
-        System.out.println("Target is: "+target);
-        System.out.println("LastMove is: "+lastMoveMade);
+        //System.out.println("startIndex is: "+startIndex);
+        //System.out.println("Target is: "+target);
+        //System.out.println("LastMove is: "+lastMoveMade);
         int interceptPath[];
         interceptPath = game.getShortestPath(target, startIndex,
                 lastMoveMade);

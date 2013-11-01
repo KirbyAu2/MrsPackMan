@@ -135,7 +135,7 @@ public class EvadePacmanMove implements IAction, IBinaryNode {
     }
 
     public boolean aboutToBeEaten(Game game) {
-        System.out.println("_____Inside about to be eaten FUNCTION");
+        //System.out.println("_____Inside about to be eaten FUNCTION");
         boolean selfSacrafice = true;
         // Find out if this ghost is the closest
         int ghostIndices[] = new int[4];
